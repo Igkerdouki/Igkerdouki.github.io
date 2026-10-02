@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloom — Ioanna Gkerdouki</title>
+<meta name="description" content="Bloom is an investing app for beginners: it explains itself as you use it, with a bond finder, a plain-language AI assistant, and a multi-agent system underneath. In active development.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero wrap">
+  <div class="case-split">
+    <div class="case-copy">
+      <span class="eyebrow">04 — Bloom <span class="badge badge-wip">In progress</span></span>
+      <h1 class="display">Investing that <em>teaches you</em> as you go.</h1>
+      <p class="lead narrow">
+        Most investing tools assume you already know what you are doing. Bloom is the
+        opposite: so easy to use that it teaches you the simple things as you go, and you stop
+        feeling lost. So far it is at its best for long-term investing and for short- and
+        long-term bonds.
+      </p>
+    </div>
+
+    <aside class="demo" aria-label="Try the idea behind Bloom">
+      <div class="demo-head">
+        <span class="demo-logo" aria-hidden="true">🌸</span>
+        <div>
+          <strong>Try it</strong>
+          <span>How long can you leave the money alone?</span>
+        </div>
+      </div>
+
+      <div class="demo-bars" role="group" aria-label="US Treasury yields by length of loan">
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="1 month" data-years="0.0833" data-yield="4.06" style="--h:21%;" aria-label="1 month: 4.06%"><i></i><span>1m</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="3 months" data-years="0.2500" data-yield="4.17" style="--h:27%;" aria-label="3 months: 4.17%"><i></i><span>3m</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="6 months" data-years="0.5000" data-yield="4.27" style="--h:31%;" aria-label="6 months: 4.27%"><i></i><span>6m</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="1 year" data-years="1.0000" data-yield="4.44" style="--h:39%;" aria-label="1 year: 4.44%"><i></i><span>1y</span></button>
+        <button type="button" class="demo-bar" aria-pressed="true" data-label="2 years" data-years="2.0000" data-yield="4.78" style="--h:55%;" aria-label="2 years: 4.78%"><i></i><span>2y</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="3 years" data-years="3.0000" data-yield="4.91" style="--h:61%;" aria-label="3 years: 4.91%"><i></i><span>3y</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="5 years" data-years="5.0000" data-yield="5.01" style="--h:66%;" aria-label="5 years: 5.01%"><i></i><span>5y</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="7 years" data-years="7.0000" data-yield="5.12" style="--h:71%;" aria-label="7 years: 5.12%"><i></i><span>7y</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="10 years" data-years="10.0000" data-yield="5.24" style="--h:76%;" aria-label="10 years: 5.24%"><i></i><span>10y</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="20 years" data-years="20.0000" data-yield="5.64" style="--h:95%;" aria-label="20 years: 5.64%"><i></i><span>20y</span></button>
+        <button type="button" class="demo-bar" aria-pressed="false" data-label="30 years" data-years="30.0000" data-yield="5.61" style="--h:93%;" aria-label="30 years: 5.61%"><i></i><span>30y</span></button>
+      </div>
+      <input class="demo-range" type="range" min="0" max="10" step="1" value="4" aria-label="How long you lend for">
+
+      <div class="demo-out" aria-live="polite">
+        <div class="demo-yield"><b>4.78%</b><span>a year, for 2 years</span></div>
+        <p class="demo-say">Lend the US government $1,000 for 2 years and you get back about <b>$1,098</b>.</p>
+        <p class="demo-lesson">A middle road: a better rate than the shortest bills, without tying your money up for decades.</p>
+      </div>
+
+      <p class="demo-note">
+        US Treasury yields as shown in Bloom on 1 October 2026. A simplified illustration
+        that assumes interest is reinvested at the same rate. Not financial advice.
+      </p>
+    </aside>
+  </div>
+
+  <dl class="case-summary">
+    <div>
+      <dt>Role</dt>
+      <dd>ML &amp; Full Stack</dd>
+    </div>
+    <div>
+      <dt>Status</dt>
+      <dd>In active development</dd>
+    </div>
+    <div>
+      <dt>Year</dt>
+      <dd>2026 — ongoing</dd>
+    </div>
+    <div>
+      <dt>Stack</dt>
+      <dd>FastAPI, SQLAlchemy, React, TypeScript, Recharts</dd>
+    </div>
+    <div>
+      <dt>Integrations</dt>
+      <dd>Interactive Brokers, Coinbase, Alpaca, CSV import</dd>
+    </div>
+    <div>
+      <dt>Code</dt>
+      <dd><a href="https://github.com/Igkerdouki/portfolio-tracker">View on GitHub ↗</a></dd>
+    </div>
+  </dl>
+</header>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Built for beginners</span>
+    <h2>It explains itself while you use it</h2>
+    <p>
+      Take bonds. You tell Bloom how soon you need the money back, and the bond finder
+      lists US Treasuries that fit, next to today's official Treasury yields. Then you
+      just ask. Type "highlight the 3 best treasuries from this list" and Lily, the
+      built-in assistant, marks her picks in the table and explains each one in plain
+      language.
+    </p>
+  </div>
+
+  <figure>
+    <div class="figure-frame">
+      <video src="../assets/bloom-lily-demo.mp4" poster="../assets/bloom-bonds.png" autoplay muted loop playsinline controls
+             aria-label="Screen recording of Bloom: the question 'highlight the 3 best treasuries from this list' is typed into the chat, the assistant thinks, then three rows in the bond list light up as its picks with the reasons beside them."></video>
+    </div>
+    <figcaption>
+      Seventeen seconds of Bloom, and only part of what it does. Ask in your own words;
+      the picks light up in the list and the reasoning sits right beside them.
+    </figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Plain language</h3>
+      <p>Every recommendation comes with the reason, the main risk, and what would change it — in words a first-time investor can follow.</p>
+    </div>
+    <div class="card">
+      <h3>Honest about what it knows</h3>
+      <p>When no broker is connected, Bloom says so: prices are labelled as estimates worked out from the yield curve, not live quotes.</p>
+    </div>
+    <div class="card">
+      <h3>Look, don't touch</h3>
+      <p>The bond finder is look-up only, and Bloom runs in a read-only secure mode by default. Nothing there can buy or sell.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Connect what you already use</span>
+    <h2>Your broker, not a new one</h2>
+    <p>
+      Bloom links to the platform you already have. So far that is Interactive Brokers,
+      Coinbase and Alpaca, plus a CSV import that works with any broker. I am working on
+      expanding it to more platforms.
+    </p>
+  </div>
+
+  <figure style="max-width:560px;">
+    <div class="figure-frame">
+      <img src="../assets/bloom-brokers.png" alt="Bloom's Add Broker dialog offering Interactive Brokers, Coinbase, Alpaca, and CSV import from any broker.">
+    </div>
+    <figcaption>Adding a broker.</figcaption>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Under the hood</span>
+    <h2>Most trading tools have no memory</h2>
+    <p>
+      A dashboard tells you what you hold and what it is worth. A screener tells you what
+      matches your criteria today. Neither has any notion of whether the reasoning that put
+      you in a position was sound — and neither gets better as you use it.
+    </p>
+    <p>
+      Bloom is built around the opposite assumption: that the useful signal is in your own
+      history. Every trade the system takes is recorded with the conditions that triggered
+      it, so patterns in what worked and what did not become queryable rather than
+      remembered.
+    </p>
+  </div>
+
+  <p class="pull">The edge isn't in the next signal. It's in what the last hundred taught you.</p>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Architecture</span>
+    <h2>Four agents, one orchestrator</h2>
+    <p>
+      Rather than a single monolithic strategy, Bloom splits the work into agents with
+      narrow responsibilities that pass messages through a central coordinator. Each one
+      can be reasoned about, tested, and replaced independently.
+    </p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Orchestrator</h3>
+      <p>The central coordinator. Routes messages between agents and holds the shared state, so no agent needs to know about any other's internals.</p>
+    </div>
+    <div class="card">
+      <h3>Scanner</h3>
+      <p>Monitors the watchlist for trading signals using technical analysis — the only agent that looks outward at the market.</p>
+    </div>
+    <div class="card">
+      <h3>Execution</h3>
+      <p>Places trades through Interactive Brokers, including position sizing. Isolated deliberately: the component that can move money does one thing.</p>
+    </div>
+    <div class="card">
+      <h3>Journal</h3>
+      <p>Tracks performance, identifies patterns across past trades, and generates reports. This is the agent the whole system exists to feed.</p>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      Keeping execution as its own isolated agent is a safety decision as much as an
+      architectural one. The surface area that can place an order stays small and explicit,
+      which makes it possible to reason about failure modes that matter more than a missed
+      signal does.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Built so far</span>
+    <h2>Where it stands</h2>
+  </div>
+
+  <div class="stack">
+    <div class="stack-row">
+      <div class="stack-k">Portfolio core</div>
+      <div class="stack-v">Dashboard with real-time value and P&amp;L, position management, allocation breakdown by asset type, and historical performance charting.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Analysis</div>
+      <div class="stack-v">Fundamentals (P/E, EPS, market cap, dividend yield), technical indicators (RSI, moving averages, volume), and news sentiment scoring.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Agent system</div>
+      <div class="stack-v">Orchestrator, scanner, execution, and journal agents with message routing between them.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Broker integration</div>
+      <div class="stack-v">Interactive Brokers account sync, order placement through the TWS API, and live price streaming.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Signal intake</div>
+      <div class="stack-v">TradingView webhook receiver with Pine Script templates, routing external alerts into the agent system.</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p>
+      <strong>This project is unfinished, and I am writing it up that way on purpose.</strong>
+      The infrastructure runs; the self-improvement loop — the part that closes journal
+      findings back into scanner behavior — is the open problem I am working on now. A
+      system that claims to learn from its own trades needs evidence that it actually does,
+      and I do not have that evidence yet.
+    </p>
+  </div>
+
+  <div class="narrow">
+    <h3 style="margin-top:44px;">What I'm working on next</h3>
+    <p>
+      Closing the loop is the whole remaining question. Getting the journal to produce
+      findings is straightforward; getting those findings to change scanner behavior
+      without overfitting to a short and noisy trade history is not. Market data offers
+      very few independent samples and enormous temptation to read patterns into noise —
+      which makes honest backtesting, not model sophistication, the real constraint.
+    </p>
+    <p>
+      The next milestone is a validation framework that can distinguish a strategy
+      adjustment that genuinely helped from one that merely fit the past.
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <a class="next" href="speccheck.html">
+    <span class="next-l">Next project</span>
+    <span class="next-t">SpecCheck →</span>
+  </a>
+</div>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-links">
+      <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+      <a href="https://github.com/Igkerdouki/portfolio-tracker">Repository</a>
+      <a href="../index.html">All work</a>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="../site.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpecCheck — Ioanna Gkerdouki</title>
+<meta name="description" content="An open-source tool that checks whether a pull request does what the ticket asked — by running each requirement against the live app instead of reading the diff.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero wrap">
+  <span class="eyebrow">05 — SpecCheck <span class="badge badge-wip">Early</span></span>
+  <h1 class="display">Don't read the code. <em>Run it.</em></h1>
+  <p class="lead narrow">
+    AI code reviewers read a diff and guess whether the pull request does what the ticket
+    asked. SpecCheck turns each requirement into real calls against the running app —
+    moving the clock forward when the ticket talks about time — and posts a verdict with
+    the evidence attached.
+  </p>
+
+  <dl class="case-summary">
+    <div>
+      <dt>Role</dt>
+      <dd>Design &amp; build, solo</dd>
+    </div>
+    <div>
+      <dt>Year</dt>
+      <dd>2026</dd>
+    </div>
+    <div>
+      <dt>Stack</dt>
+      <dd>Python standard library, GitHub Actions</dd>
+    </div>
+    <div>
+      <dt>Status</dt>
+      <dd>Working prototype, open source</dd>
+    </div>
+    <div>
+      <dt>Code</dt>
+      <dd><a href="https://github.com/Igkerdouki/speccheck">View on GitHub ↗</a></dd>
+    </div>
+  </dl>
+</header>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The question</span>
+    <h2>Did the AI actually build what the ticket asked for?</h2>
+    <p>
+      More and more pull requests are written by a model, and more and more of them are
+      reviewed by one too. Both sides of that exchange are reading text. The reviewer sees
+      a diff that looks like a lockout feature and says it looks like a lockout feature.
+    </p>
+    <p>
+      What nobody has done is start the app and try to log in four times. The tools that
+      read the ticket never run the code, and the tools that run the app are not looking
+      at the ticket. SpecCheck sits in that gap: ticket in, executed checks, one verdict
+      per requirement.
+    </p>
+  </div>
+
+  <p class="pull">A reviewer that reads the diff is guessing. One that runs it has evidence.</p>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">How it works</span>
+    <h2>A ticket becomes a list of things to try</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <h3>Write the ticket as a spec</h3>
+      <p>
+        Each requirement becomes a short list of executable steps: HTTP calls, the status
+        each one should return, and <code>advance_minutes</code> to move a fake clock.
+      </p>
+    </div>
+    <div class="step">
+      <h3>Run every requirement from a clean state</h3>
+      <p>
+        SpecCheck starts the app with test hooks on, resets it before each requirement,
+        and records every request and response as it goes.
+      </p>
+    </div>
+    <div class="step">
+      <h3>Post the verdict on the pull request</h3>
+      <p>
+        The result is a Markdown report with the full trace behind each verdict. A GitHub
+        Action comments it on the PR and fails the check if any requirement is not met.
+      </p>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>✅ Met</h3>
+      <p>The check ran and passed. The trace is attached.</p>
+    </div>
+    <div class="card">
+      <h3>❌ Not met</h3>
+      <p>The check ran and failed. The trace shows exactly which call went wrong.</p>
+    </div>
+    <div class="card">
+      <h3>⚠️ Couldn't verify</h3>
+      <p>The environment broke, or the requirement is too vague to test.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The demo</span>
+    <h2>An off-by-one that reads perfectly fine</h2>
+    <p>
+      The ticket: <strong>"After 3 failed login attempts, lock the account for 15 minutes.
+      Login should be secure."</strong> The demo app is a plausible AI-written
+      implementation of it, with one bug — it locks on the fourth failure instead of the
+      third. In a diff, that is one comparison operator. Run against the app, it is this:
+    </p>
+  </div>
+
+  <div class="trace"><span class="dim">R1 — after 3 failed attempts, a correct password is rejected</span>
+POST /login  wrong password     → 401   <span class="ok">expected 401 ✓</span>
+POST /login  wrong password     → 401   <span class="ok">expected 401 ✓</span>
+POST /login  wrong password     → 401   <span class="ok">expected 401 ✓</span>
+POST /login  correct password   → 200   <span class="bad">expected 423 ✗</span></div>
+
+  <div class="stack">
+    <div class="stack-row">
+      <div class="stack-k">R1 · ❌ Not met</div>
+      <div class="stack-v">After 3 failed attempts, a correct password is rejected.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">R2 · ❌ Not met</div>
+      <div class="stack-v">The account is still locked 14 minutes later.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">R3 · ✅ Met</div>
+      <div class="stack-v">The lock expires after 15 minutes — checked by moving the clock 16 minutes forward.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">R4 · ⚠️ Couldn't verify</div>
+      <div class="stack-v">"Login should be secure." Too vague to test; the report asks for a checkable criterion instead.</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      With the bug fixed, R1 and R2 turn green and R4 stays exactly where it was.
+    </p>
+  </div>
+
+  <div class="note">
+    <p>
+      <strong>The third verdict is the one I care about.</strong> A tool that has to answer
+      yes or no will eventually say yes to "login should be secure." SpecCheck is allowed
+      to say it does not know — and that refusal is more useful to a reviewer than a
+      confident pass that checked nothing.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Design decisions</span>
+    <h2>Keeping the checker honest</h2>
+  </div>
+
+  <div class="stack">
+    <div class="stack-row">
+      <div class="stack-k">Spec from the ticket</div>
+      <div class="stack-v">A language model drafts the spec from the ticket text and a description of the API. It never sees the pull request's code, so the checks reflect what was asked for, not what was built.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">A human approves once</div>
+      <div class="stack-v">Drafts are saved separately and reviewed before they count. Steps that call endpoints missing from the API description are flagged before approval.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Time is a first-class step</div>
+      <div class="stack-v">"For 15 minutes" is the kind of requirement that never gets tested by hand. A fake clock makes it one line in the spec.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">No dependencies</div>
+      <div class="stack-v">The runner is plain Python standard library, so adding it to a repository is copying a folder and a workflow file.</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <h3 style="margin-top:44px;">Where it goes next</h3>
+    <p>
+      Database assertions — a before-and-after diff of Postgres state, for requirements an
+      HTTP status cannot show. Reading tickets straight from GitHub Issues and Linear. And
+      support for a real framework, FastAPI or Express, in place of the standard-library
+      demo app.
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <a class="next" href="perceptra.html">
+    <span class="next-l">Back to the start</span>
+    <span class="next-t">Perceptra →</span>
+  </a>
+</div>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-links">
+      <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+      <a href="https://github.com/Igkerdouki/speccheck">Repository</a>
+      <a href="../index.html">All work</a>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="../site.js"></script>
+</body>
+</html>

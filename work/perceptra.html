@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perceptra — Ioanna Gkerdouki</title>
+<meta name="description" content="Real-time medical emergency detection from live video. Product ownership, system architecture, and a MediaPipe pose pipeline detecting falls, choking, and unresponsiveness.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero perc-hero">
+  <canvas class="orb-canvas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <span class="eyebrow">01 — Perceptra</span>
+    <h1 class="display">Cameras that <em>recognize</em> an emergency.</h1>
+    <p class="lead narrow">
+      Most security cameras only matter after something has already happened. Perceptra
+      watches live video and identifies medical emergencies as they occur — a fall, a
+      person choking, a body that has stopped moving — then routes an alert to someone who
+      can respond.
+    </p>
+    <p class="perc-note" aria-hidden="true">Move your cursor — it's watching</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <dl class="case-summary">
+    <div>
+      <dt>Role</dt>
+      <dd>Product Owner &amp; ML Lead</dd>
+    </div>
+    <div>
+      <dt>Team</dt>
+      <dd>6 people — 1 PM, 4 developers</dd>
+    </div>
+    <div>
+      <dt>Context</dt>
+      <dd>SDSC Research Data Services, 2026</dd>
+    </div>
+    <div>
+      <dt>I owned</dt>
+      <dd>Product direction, system architecture, medical detection pipeline</dd>
+    </div>
+    <div>
+      <dt>Stack</dt>
+      <dd>MediaPipe, YOLO, FastAPI, Supabase, Next.js</dd>
+    </div>
+  </dl>
+</div>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">See it work</span>
+    <h2>Two emergencies, caught on a live camera</h2>
+    <p>
+      Both clips are the real console, recorded as it ran. No mock-ups: the box, the
+      label and the alert are what the pipeline produced.
+    </p>
+  </div>
+
+  <div class="figure-pair">
+    <figure>
+      <div class="figure-frame">
+        <video src="../assets/perceptra-choking-demo.mp4" poster="../assets/perceptra-choking-demo.jpg" autoplay muted loop playsinline controls
+               aria-label="Screen recording of the Perceptra live console: with both hands at my throat, a red box is drawn around me labelled 'Choking gesture detected, 80%', and the Alert Monitor shows the active detection with Escalate and Dismiss buttons."></video>
+      </div>
+      <figcaption>
+        The live console, recorded as it ran. Hands at the throat, and the Alert Monitor
+        raises "Choking gesture detected" at 80% confidence, with the option to escalate
+        or dismiss.
+      </figcaption>
+    </figure>
+    <figure>
+      <div class="figure-frame">
+        <video src="../assets/perceptra-fall-demo.mp4" poster="../assets/perceptra-fall-demo.jpg" autoplay muted loop playsinline controls
+               aria-label="Screen recording of the Perceptra live console: I hold a phone showing a drawing of a person falling up to the camera. A red box appears around the figure and the Alert Monitor shows 'Fall detected, just fell' with a confidence score. I dismiss the alert and it moves to the recent incidents list."></video>
+      </div>
+      <figcaption>
+        Fall detection, tested without anyone falling: I hold up a phone showing a picture
+        of a person mid-fall. The console boxes the figure, raises "Fall detected — just
+        fell," and logs the incident once I dismiss it.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The product</span>
+    <h2>What someone sees first</h2>
+    <p>
+      Before any camera is connected, Perceptra has to explain itself in a few seconds. I
+      designed the landing page and the visual identity: a dark console, one particle
+      sphere, and a single promise — from cameras to instant alerts.
+    </p>
+  </div>
+
+  <figure>
+    <div class="figure-frame">
+      <video src="../assets/perceptra-site-tour.mp4" poster="../assets/perceptra-site-tour.jpg" autoplay muted loop playsinline controls
+             aria-label="Screen recording scrolling through the Perceptra landing page: the perceptra wordmark over a particle sphere, a section titled 'From cameras to instant alerts' showing a camera frame with a detection and the alert it produces, and a grid of the places it protects."></video>
+    </div>
+    <figcaption>The live site, recorded as I scrolled through it.</figcaption>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The problem</span>
+    <h2>Surveillance is passive. Emergencies are not.</h2>
+    <p>
+      A camera in a care facility, a store, or a stairwell records everything and
+      understands nothing. When someone collapses, the footage exists — but it is only
+      watched afterward, during an investigation, once the outcome is already fixed.
+    </p>
+    <p>
+      For medical emergencies that delay is the entire problem. The difference between a
+      fall that is noticed in thirty seconds and one noticed in thirty minutes is not a
+      difference in evidence quality. It is a different outcome for the person on the
+      floor.
+    </p>
+  </div>
+
+  <p class="pull">The footage was never the missing piece. Attention was.</p>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Product direction</span>
+    <h2>Deciding what to build first</h2>
+    <p>
+      As Product Owner I had to narrow an ambitious pitch — "detect crime, suspicious
+      behavior, and medical emergencies" — into something a six-person team could
+      genuinely demonstrate in the time we had. Three decisions shaped everything downstream.
+    </p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <h3>Medical events and weapons first</h3>
+      <p>
+        These two are visually unambiguous. A body horizontal on the ground is a
+        detectable geometric fact. "Suspicious behavior" is not — it is a judgment call
+        that invites bias and produces false positives we could not defend. Starting with
+        the unambiguous cases meant the demo would be honest.
+      </p>
+    </div>
+    <div class="step">
+      <h3>Live webcam demos, not static test images</h3>
+      <p>
+        I pushed the team away from evaluating on curated images. A model that scores well
+        on a clean dataset can fail completely on real webcam input — motion blur, bad
+        lighting, partial framing. Running against a live feed from day one surfaced those
+        failures while we still had time to fix them.
+      </p>
+    </div>
+    <div class="step">
+      <h3>Split ML ownership by modality</h3>
+      <p>
+        I took pose-based medical detection; a teammate took YOLO weapon detection. Two
+        independent models, one shared scoring layer. This let both tracks move in parallel
+        without blocking each other, and kept the integration surface small and explicit.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">System architecture</span>
+    <h2>Designing the path from camera to alert</h2>
+    <p>
+      Before any model was written, I drew the full system — how a frame travels from a
+      camera, through inference, into a severity score, out to a person. Sketching it by
+      hand first was deliberate: it forced the team to argue about the boundaries between
+      components while they were still cheap to move.
+    </p>
+  </div>
+
+  <figure class="figure-arch">
+    <div class="figure-frame">
+      <img src="../assets/perceptra-sketch.png" alt="Hand-drawn system architecture sketch showing camera feeds and webcam frames entering a FastAPI backend, MediaPipe pose and YOLO weapon models, event detection for fall, choking and weapons, Supabase storage, and a Next.js dashboard with Twilio and SendGrid alerts.">
+    </div>
+    <figcaption>
+      The original sketch — camera → FastAPI backend → parallel inference (MediaPipe pose,
+      YOLO weapons) → event detection → Supabase → dashboard and alerts. Drawn on paper so
+      the team could argue about the boundaries before anything was expensive to change.
+    </figcaption>
+  </figure>
+
+  <div class="narrow">
+    <p>
+      That sketch became the formal system diagram the team built against — the same
+      shape, with the deployment boundaries, transport protocols, and data paths made
+      explicit.
+    </p>
+  </div>
+
+  <figure class="figure-arch">
+    <div class="figure-frame">
+      <img src="../assets/perceptra-architecture.png" alt="Formal system architecture diagram: a Vercel frontend with live view, history and login pages; a WebSocket detect endpoint into a FastAPI server on an SDSC GPU backend; MediaPipe pose, YOLOv11 weapons and theft detection branches; Twilio SMS alerts; and a Vercel API layer writing to Supabase auth, database and storage.">
+    </div>
+    <figcaption>
+      The formalized architecture. Live view streams WebSocket frames to
+      <span style="color:var(--teal);">/ws/detect</span> on the GPU backend; detection
+      results return to the client while incident data flows through the REST API layer
+      into Supabase auth, database, and storage. Alert services branch directly off the
+      FastAPI server so an urgent SMS never waits on a database write.
+    </figcaption>
+  </figure>
+
+  <div class="narrow">
+    <h3 style="margin-top:8px;">How a frame moves through the system</h3>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <h3>Capture</h3>
+      <p>A camera or webcam streams video at 30 fps. Each frame is a still image of the space — a room, an aisle, a hallway.</p>
+    </div>
+    <div class="step">
+      <h3>Ingest</h3>
+      <p>Frames reach the FastAPI backend in real time over HTTP or WebSocket.</p>
+    </div>
+    <div class="step">
+      <h3>Parallel inference</h3>
+      <p>MediaPipe extracts 33 body landmarks — shoulders, hips, wrists, ankles. YOLO scans the same frame independently for weapons.</p>
+    </div>
+    <div class="step">
+      <h3>Event detection</h3>
+      <p>Geometric rules run over the landmarks to classify the pose into a specific event, or into nothing at all.</p>
+    </div>
+    <div class="step">
+      <h3>Score and store</h3>
+      <p>The event receives a severity from 1 to 4 and is written to Supabase with a timestamp, event type, confidence, and camera ID.</p>
+    </div>
+    <div class="step">
+      <h3>Alert</h3>
+      <p>Severity determines the channel — SMS through Twilio for urgent events, email through SendGrid for records, and a live push to the Next.js dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The model</span>
+    <h2>Teaching geometry to recognize distress</h2>
+    <p>
+      I built the medical detection pipeline on MediaPipe pose estimation. Rather than
+      training a classifier on emergency footage — which barely exists, and which raises
+      obvious consent problems — I defined each event as a geometric relationship between
+      body landmarks. The logic is legible, and when it fails you can see exactly why.
+    </p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Fall</h3>
+      <p>The torso goes horizontal and the body sits in the lower half of the frame — orientation alone is not enough, since a person can bend over while standing.</p>
+      <div class="rule">shoulders ≈ level with hips<br>AND body_y &gt; frame_midpoint</div>
+    </div>
+    <div class="card">
+      <h3>Choking</h3>
+      <p>Both wrists rise to the throat and stay centered on the body's midline. The universal choking sign, expressed as landmark positions.</p>
+      <div class="rule">both wrists near neck landmarks<br>AND centered on torso axis</div>
+    </div>
+    <div class="card">
+      <h3>Unresponsive</h3>
+      <p>The most important signal is absence. A person who has fallen and then stops moving entirely is in a different category from someone who falls and gets up.</p>
+      <div class="rule">fall detected<br>AND landmark_delta ≈ 0 for 3s+</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      The unresponsive case is the one I am most satisfied with. Fall detection alone
+      produces constant noise — people sit on floors, stretch, play with pets. Adding a
+      temporal condition on top of a spatial one filters nearly all of that away, because
+      the thing that actually distinguishes an emergency is not the fall. It is failing to
+      get back up.
+    </p>
+  </div>
+
+  <p class="pull">A fall is an event. Not getting up is an emergency.</p>
+</section>
+
+<section class="wrap">
+  <span class="eyebrow">Evidence</span>
+  <div class="narrow">
+    <h2>Detections from the live demo</h2>
+    <p>
+      I built a live webcam demo that runs the full pipeline and auto-captures a frame
+      whenever an event fires. These are unedited captures — the overlay shows the actual
+      landmarks the classifier used to make each call.
+    </p>
+  </div>
+
+  <div class="figure-grid">
+    <figure>
+      <div class="figure-frame">
+        <img src="../assets/perceptra-fall.png" alt="Webcam frame with pose landmarks overlaid on a person lying horizontally on the floor.">
+      </div>
+      <figcaption>Fall — torso horizontal, body low in frame.</figcaption>
+    </figure>
+    <figure>
+      <div class="figure-frame">
+        <img src="../assets/perceptra-choking.png" alt="Webcam frame with pose landmarks overlaid on a person with both hands raised to their throat.">
+      </div>
+      <figcaption>Choking — both wrists tracked to the throat region.</figcaption>
+    </figure>
+    <figure>
+      <div class="figure-frame">
+        <img src="../assets/perceptra-unresponsive.png" alt="Webcam frame with pose landmarks overlaid on a motionless person on the ground.">
+      </div>
+      <figcaption>Unresponsive — fall plus three seconds without landmark movement.</figcaption>
+    </figure>
+  </div>
+
+  <div class="narrow">
+    <p>
+      I also wrote a false-positive analysis script to work back through captures the
+      system got wrong. Most early errors came from the same source: treating body
+      orientation as sufficient on its own. That finding is what produced the second
+      condition in every rule above.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Severity</span>
+    <h2>Not every detection deserves a phone call</h2>
+    <p>
+      An alert system that treats loitering and a weapon identically trains people to
+      ignore it. I defined a four-level severity scale so the response channel could scale
+      with the actual stakes — and so a human always stays in the loop on the ambiguous
+      middle.
+    </p>
+  </div>
+
+  <div class="severity">
+    <div class="sev-row sev-1">
+      <div class="sev-n">1</div>
+      <div class="sev-label">Low</div>
+      <div class="sev-desc">Loitering — logged to the dashboard, no notification.</div>
+    </div>
+    <div class="sev-row sev-2">
+      <div class="sev-n">2</div>
+      <div class="sev-label">Medium</div>
+      <div class="sev-desc">Suspicious activity — surfaced for human review.</div>
+    </div>
+    <div class="sev-row sev-3">
+      <div class="sev-n">3</div>
+      <div class="sev-label">High</div>
+      <div class="sev-desc">Theft or altercation — email with the incident clip.</div>
+    </div>
+    <div class="sev-row sev-4">
+      <div class="sev-n">4</div>
+      <div class="sev-label">Critical</div>
+      <div class="sev-desc">Weapon or medical emergency — immediate SMS to security.</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      This connects to a principle I set for the product early on: <strong>the AI detects,
+      humans confirm</strong>. The system is built to raise attention, not to render
+      verdicts. Video also stays local wherever possible — in a product pointed at cameras
+      in spaces where people live and work, that constraint is not optional.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Outcome</span>
+    <h2>What we showed at the final presentation</h2>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-n">3</div>
+      <div class="metric-l">Medical events detected in real time from live video</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">33</div>
+      <div class="metric-l">Pose landmarks tracked per frame</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">6</div>
+      <div class="metric-l">Person team directed as Product Owner</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">4</div>
+      <div class="metric-l">Parts of the system demoed live, end to end</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      For the final presentation we did not describe Perceptra, we ran it. The demo went
+      from a live camera to a reviewed incident on a deployed system, and every part below
+      was shown working. Alongside the technical work I ran 1:1s with each developer to
+      unblock their features.
+    </p>
+  </div>
+
+  <div class="stack">
+    <div class="stack-row">
+      <div class="stack-k">Medical events</div>
+      <div class="stack-v">A fall, a person choking, and a body that has stopped moving, detected on a live camera and raised in the Alert Monitor.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Weapon detection</div>
+      <div class="stack-v">A YOLO model flagging weapons in the same live feed.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">History page</div>
+      <div class="stack-v">An incident archive where escalated detections can be reviewed afterwards, with the camera footage and a summary of each one.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Deployment</div>
+      <div class="stack-v">The FastAPI detection service hosted on SDSC's cloud, and the web application deployed on Vercel.</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <h3 style="margin-top:44px;">What I took from it</h3>
+    <p>
+      The technical learning was pose estimation and threshold design. The larger one was
+      about sequencing: my most useful contribution as Product Owner was not adding scope
+      but removing it. Cutting "suspicious behavior" early is what made a real demo
+      possible, and it is also the decision I would defend hardest — that category was
+      never going to be defensible at the accuracy we could reach.
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <a class="next" href="geosync.html">
+    <span class="next-l">Next project</span>
+    <span class="next-t">GeoSync →</span>
+  </a>
+</div>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-links">
+      <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+      <a href="https://github.com/Igkerdouki">GitHub</a>
+      <a href="../index.html">All work</a>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="../site.js"></script>
+</body>
+</html>

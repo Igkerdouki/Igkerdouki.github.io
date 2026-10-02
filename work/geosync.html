@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GeoSync — Ioanna Gkerdouki</title>
+<meta name="description" content="Real-time pesticide drift monitoring for California — Gaussian plume modeling over state spray records, turned into an early-warning system for schools and farmworker communities.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero geo-hero">
+  <svg class="geo-map" viewBox="0 0 1440 640" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+    <defs>
+      <filter id="geoSoft" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+    </defs>
+    <rect width="1440" height="640" fill="#eef3e8"/>
+    <g stroke="#cddbbd" stroke-width="1.5">
+      <path d="M560 40 760 22 790 150 590 176Z" fill="#e3ecd8"/>
+      <path d="M800 18 1010 0 1036 126 826 148Z" fill="#dbe7cc"/>
+      <path d="M1052 0 1250 0 1276 104 1074 124Z" fill="#e6eedb"/>
+      <path d="M1290 0 1440 0 1440 92 1312 102Z" fill="#dde8cf"/>
+      <path d="M596 200 800 172 832 312 628 344Z" fill="#dbe7cc"/>
+      <path d="M1100 150 1330 126 1356 256 1126 284Z" fill="#e3ecd8"/>
+      <path d="M1370 122 1440 116 1440 250 1394 254Z" fill="#e6eedb"/>
+      <path d="M640 372 846 340 878 484 672 520Z" fill="#e6eedb"/>
+      <path d="M1140 312 1376 286 1402 430 1166 460Z" fill="#dbe7cc"/>
+      <path d="M690 548 884 514 908 640 706 640Z" fill="#dde8cf"/>
+      <path d="M930 500 1150 474 1180 640 954 640Z" fill="#e3ecd8"/>
+      <path d="M1196 486 1440 458 1440 640 1222 640Z" fill="#e6eedb"/>
+    </g>
+    <path d="M840 166 1080 138 1112 296 872 328Z" fill="#f3e3cf" stroke="#d1803a" stroke-width="2" stroke-dasharray="7 6"/>
+    <path d="M480 610C700 520 880 520 1040 470S1330 300 1440 280" fill="none" stroke="#d6dccb" stroke-width="13" stroke-linecap="round"/>
+    <path d="M480 610C700 520 880 520 1040 470S1330 300 1440 280" fill="none" stroke="#fbfcf8" stroke-width="8" stroke-linecap="round"/>
+
+    <g class="geo-plume" transform="rotate(-70 1010 330)" filter="url(#geoSoft)">
+      <ellipse cx="1274" cy="330" rx="300" ry="96" fill="#d1803a" opacity=".16"/>
+      <ellipse cx="1200" cy="330" rx="215" ry="64" fill="#d1803a" opacity=".2"/>
+      <ellipse cx="1124" cy="330" rx="130" ry="38" fill="#d1803a" opacity=".3"/>
+    </g>
+    <circle class="geo-ring" cx="1010" cy="330" r="10" fill="none" stroke="#d1803a" stroke-width="2"/>
+    <circle cx="1010" cy="330" r="8" fill="#d1803a" stroke="#fff" stroke-width="3"/>
+    <text x="1010" y="366" class="geo-label" text-anchor="middle">Spray site</text>
+
+    <g class="geo-mark" data-name="the school" data-x="1262" data-y="196" transform="translate(1262 196)">
+      <rect x="-52" y="-18" width="104" height="36" rx="18"/>
+      <circle cx="-34" r="5"/>
+      <text x="-22" y="5">School</text>
+    </g>
+    <g class="geo-mark" data-name="homes nearby" data-x="1150" data-y="500" transform="translate(1150 500)">
+      <rect x="-50" y="-18" width="100" height="36" rx="18"/>
+      <circle cx="-32" r="5"/>
+      <text x="-20" y="5">Homes</text>
+    </g>
+
+    <g transform="translate(1368 78)">
+      <circle r="30" fill="#fff" stroke="#d6dccb" stroke-width="1.5"/>
+      <g class="geo-needle" transform="rotate(-70)">
+        <path d="M-15 0H13M6 -7l8 7-8 7" fill="none" stroke="#3f8f5f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <text class="geo-label geo-wind" y="52" text-anchor="middle">Wind to N</text>
+    </g>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow">02 — GeoSync <span class="badge badge-wip">In progress</span></span>
+    <h1 class="display">The data existed. The <em>warning</em> did not.</h1>
+    <p class="lead narrow">
+      California logs every pesticide application in the state. That record is public, and
+      it is effectively unreadable — buried in government databases nobody outside a
+      research office can query. GeoSync turns it into a live map, a drift forecast, and an
+      alert that reaches a school before the spray does.
+    </p>
+    <p class="geo-status" aria-live="polite"><span class="geo-dot"></span><span class="geo-status-text">The school is outside the drift path</span></p>
+    <p class="geo-note">Move your cursor to turn the wind. An illustration of the drift model, not live data.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <dl class="case-summary">
+    <div>
+      <dt>Role</dt>
+      <dd>ML &amp; Platform</dd>
+    </div>
+    <div>
+      <dt>Context</dt>
+      <dd>SDSC Research Data Services, 2026</dd>
+    </div>
+    <div>
+      <dt>Data</dt>
+      <dd>California PUR, CalEnviroScreen, OpenWeatherMap, EPA</dd>
+    </div>
+    <div>
+      <dt>Stack</dt>
+      <dd>FastAPI, PostgreSQL/PostGIS, React, MapLibre GL</dd>
+    </div>
+    <div>
+      <dt>Code</dt>
+      <dd><a href="https://github.com/Igkerdouki/geosync">View on GitHub ↗</a></dd>
+    </div>
+  </dl>
+</div>
+
+<section class="wrap geo-demo">
+  <div class="narrow">
+    <span class="eyebrow">See it work</span>
+    <h2>Ten years of spray records, on one map</h2>
+    <p>
+      A walk through the dashboard on 2023 data: counties shaded by pounds applied, the
+      schools and spray sites inside them, the built-in assistant answering a question
+      about chlorpyrifos, and the research view that states where every number comes from.
+    </p>
+  </div>
+
+  <figure class="screen">
+    <div class="screen-bar" aria-hidden="true"><i></i><i></i><i></i><span>GeoSync — live dashboard</span></div>
+    <video src="../assets/geosync-demo.mp4" poster="../assets/geosync-demo.jpg" autoplay muted loop playsinline controls
+           aria-label="Screen recording of the GeoSync dashboard: a dark map of California with counties shaded by pesticide use, hovering over spray sites and a school, opening the AI assistant and asking what chlorpyrifos is, then the research tab listing data sources and methodology."></video>
+    <figcaption>
+      Recorded from the running app. The pesticide totals come from California's public
+      use reports, 2014–2023; the live spray events in the side panel are simulated for
+      the demo.
+    </figcaption>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The problem</span>
+    <h2>Millions of pounds of chemicals, drifting without notice</h2>
+    <p>
+      Over 200 million pounds of pesticides are applied in California every year. A
+      meaningful fraction does not stay on the field it was sprayed on — it drifts, and it
+      drifts into places where people live: farmworker housing, playgrounds, school
+      campuses in the Central Valley.
+    </p>
+    <p>
+      The people most exposed are the least informed. A parent cannot find out what was
+      sprayed a quarter mile from their house last week. A school nurse seeing elevated
+      illness rates has no way to check whether anything was applied nearby. The Pesticide
+      Use Report data that would answer both questions is published — and unusable.
+    </p>
+  </div>
+
+  <p class="pull">The information exists. The protection does not.</p>
+
+  <div class="narrow">
+    <p>
+      That gap is the entire project. GeoSync is not a data collection effort. It is a
+      translation layer over a dataset the state already maintains.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Grounding the work</span>
+    <h2>Twenty users, one shared question</h2>
+    <p>
+      We wrote twenty user stories before writing any code, spanning the range of people
+      who would touch this: parents, beekeepers, farmers, school administrators, public
+      health researchers, farm inspectors, farmworkers.
+    </p>
+    <p>
+      The stories diverged wildly in framing but converged on one underlying need —
+      <strong>what was sprayed near this location, and should I change my behavior because
+      of it?</strong> A pregnant mother, a daycare provider, and a grocery buyer are all
+      asking that question with different stakes attached. Recognizing that let us build
+      one query engine underneath and vary only the presentation.
+    </p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>The parent</h3>
+      <p>"I want my child's cumulative exposure score so I can discuss cancer risk with their doctor."</p>
+    </div>
+    <div class="card">
+      <h3>The school administrator</h3>
+      <p>"I want automatic alerts when drift is approaching campus so I can keep children indoors."</p>
+    </div>
+    <div class="card">
+      <h3>The farmer</h3>
+      <p>"I want AI-optimized dosage recommendations so I use only what's needed and save money."</p>
+    </div>
+    <div class="card">
+      <h3>The organic grower</h3>
+      <p>"I want proof when a neighboring farm's drift contaminates my crops so I can protect my certification."</p>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      The farmer stories mattered more than they first appeared. A tool that only accuses
+      growers gets adopted by nobody who actually holds a sprayer. Dosage optimization gave
+      the same platform a reason to be useful to the people generating the data — which is
+      the only version of this that survives contact with the real world.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Modeling</span>
+    <h2>Physics first, learning second</h2>
+    <p>
+      Drift prediction is not a pure machine learning problem. Atmospheric dispersion has
+      well-established physics, and ignoring it in favor of fitting a model to sparse
+      labels would have been both less accurate and less defensible. I paired a Gaussian
+      plume model with learned components where the data could actually support them.
+    </p>
+  </div>
+
+  <div class="stack">
+    <div class="stack-row">
+      <div class="stack-k">Drift predictor</div>
+      <div class="stack-v">Gaussian plume dispersion combined with gradient boosting — physics sets the shape of the plume, the learned layer corrects it against observed conditions.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Atmospheric stability</div>
+      <div class="stack-v">Stability class derived from live weather, since the same application disperses very differently on a calm night than a windy afternoon.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Dosage optimizer</div>
+      <div class="stack-v">Planned next: an XGBoost model trained on California PUR records, recommending application amounts from crop, pest, and field size.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Anomaly detector</div>
+      <div class="stack-v">Isolation Forest flagging unusual spray patterns — including possible unreported events.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Risk scorer</div>
+      <div class="stack-v">Multi-factor regression producing an exposure score for any address, combining proximity, chemical toxicity, and frequency.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">NLP query engine</div>
+      <div class="stack-v">Retrieval over the spray database so a question in plain English — "what was sprayed near my house last month?" — returns a grounded answer.</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      The weather dependency is what makes this an early-warning system rather than a
+      historical archive. Drift direction is a function of conditions at the moment of
+      application, so the same spray event produces a completely different risk footprint
+      depending on when it happens.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The platform</span>
+    <h2>From a database row to a decision</h2>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Live map dashboard</h3>
+      <p>Spray events plotted with color-coded risk zones, overlaid with school and farm locations so proximity is immediately visible.</p>
+    </div>
+    <div class="card">
+      <h3>Drift forecast</h3>
+      <p>Spray location plus current weather returns a heat map of where the chemical is actually heading.</p>
+    </div>
+    <div class="card">
+      <h3>Exposure scoring</h3>
+      <p>Enter an address, get a weekly exposure score and full historical lookup for that location.</p>
+    </div>
+    <div class="card">
+      <h3>Toxicity database</h3>
+      <p>EPA classifications, carcinogenicity, and health concerns attached to each chemical — so a name in a record becomes meaningful.</p>
+    </div>
+    <div class="card">
+      <h3>Alerts</h3>
+      <p>SMS and email triggered when predicted drift approaches a registered school or home.</p>
+    </div>
+    <div class="card">
+      <h3>Research export</h3>
+      <p>Bulk CSV and JSON export up to 100K rows, with trend and comparison endpoints for public health researchers.</p>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      The research tooling turned out to matter as much as the consumer-facing map. A
+      public health researcher correlating exposure with cancer incidence by census tract
+      needs bulk access and reproducible queries, not a dashboard — so the API exposes
+      county analysis, chemical comparison, and monthly and yearly time series directly.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Outcome</span>
+    <h2>A public dataset made usable</h2>
+    <p>
+      GeoSync ships as a working platform — a FastAPI backend serving spray queries, drift
+      prediction, toxicity lookups, and research exports, with a React and MapLibre front end
+      over PostGIS.
+    </p>
+    <p>
+      What I would keep building is validation. The plume model is physically grounded, but
+      confirming predicted drift against measured deposition in the field is the step that
+      would take this from a credible forecast to a defensible one — and it is the step
+      that would let a school actually act on an alert without hesitation.
+    </p>
+    <p>
+      The reason I picked this project is not complicated. Bee colony losses hit their
+      highest recorded level last year, and childhood cancer rates in agricultural regions
+      have been climbing for decades. Those are current facts, not projections. Building a
+      warning layer over data the state already publishes is one of the few interventions
+      available that requires no new legislation and no new sensors.
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <a class="next" href="wildsafe.html">
+    <span class="next-l">Next project</span>
+    <span class="next-t">WildSafe →</span>
+  </a>
+</div>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-links">
+      <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+      <a href="https://github.com/Igkerdouki/geosync">Repository</a>
+      <a href="../index.html">All work</a>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="../site.js"></script>
+</body>
+</html>

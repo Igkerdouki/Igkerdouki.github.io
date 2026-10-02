@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WildSafe — Ioanna Gkerdouki</title>
+<meta name="description" content="WildSafe: a wildlife detection system for road safety. A zero-shot CLIP model identifies species at 94–99% accuracy, warns drivers before a collision, and plays a species-specific deterrent sound.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero wrap">
+  <div class="case-split">
+    <div class="case-copy">
+      <span class="eyebrow">WildSafe <span class="badge badge-live">Deployed</span></span>
+      <h1 class="display">It spots the deer <em>before</em> the driver does.</h1>
+      <p class="lead narrow">
+        WildSafe watches roadside cameras for animals and warns drivers before a
+        collision. I built the machine learning on CLIP, OpenAI's pre-trained
+        vision-language model, tuned to our species through prompt engineering — and the
+        accuracy was fantastic: 94–99% per species.
+      </p>
+    </div>
+
+    <figure class="phone-clip">
+      <div class="figure-frame">
+        <video src="../assets/wildsafe-demo.mp4" poster="../assets/wildsafe-demo.jpg" autoplay muted loop playsinline controls
+               aria-label="Phone footage of the WildSafe demo: the hardware on a table beside a laptop, a phone screen showing 'Wildlife alert, deer detected, 0.3 miles ahead on Route 7', and the mobile app running next to a terminal while a teammate explains how alerts arrive."></video>
+      </div>
+      <figcaption>
+        From our demo: the camera unit, the alert a driver gets — "Deer detected, 0.3 miles
+        ahead" — and the app receiving incidents over WebSockets. Sound on for the narration.
+      </figcaption>
+    </figure>
+  </div>
+
+  <dl class="case-summary">
+    <div>
+      <dt>Role</dt>
+      <dd>Machine Learning</dd>
+    </div>
+    <div>
+      <dt>Team</dt>
+      <dd>5 people</dd>
+    </div>
+    <div>
+      <dt>Context</dt>
+      <dd>IEEE Quarterly Projects, Spring 2026</dd>
+    </div>
+    <div>
+      <dt>Stack</dt>
+      <dd>CLIP, ONNX Runtime, Python, WebRTC, Flutter</dd>
+    </div>
+    <div>
+      <dt>Status</dt>
+      <dd>Deployed on Render</dd>
+    </div>
+    <div>
+      <dt>Code</dt>
+      <dd><a href="https://github.com/Igkerdouki/wildsafe-ml-service">View on GitHub ↗</a></dd>
+    </div>
+    <div>
+      <dt>Write-up</dt>
+      <dd><a href="https://devpost.com/software/wildwatch-a-wildlife-detection-system-for-road-safety-3djoa9">View on Devpost ↗</a></dd>
+    </div>
+    <div>
+      <dt>Slides</dt>
+      <dd><a href="https://igkerdouki.github.io/wildsafe-ml-service/WildSafe_Presentation.html">View the presentation ↗</a></dd>
+    </div>
+  </dl>
+</header>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The problem</span>
+    <h2>A deer is visible long before it is an emergency</h2>
+    <p>
+      The project started with a teammate's collision. Looking into it, the scale turned
+      out to be much larger than one bad night on a back road.
+    </p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-n">1.9M</div>
+      <div class="metric-l">Wildlife-vehicle collisions per year in the US</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">200</div>
+      <div class="metric-l">Deaths annually</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">$8B</div>
+      <div class="metric-l">In damages each year</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      The existing fixes — wildlife overpasses, fenced corridors, embedded roadway sensors
+      — work, and cost millions per mile. That price is why most dangerous stretches of
+      road have nothing at all. We wanted to know whether a camera and a good model could
+      cover a corridor for the price of a Raspberry Pi.
+    </p>
+  </div>
+
+  <p class="pull">The animal is always in frame before it's in the road. Something just has to be watching.</p>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The model</span>
+    <h2>Three approaches, and only one worked</h2>
+    <p>
+      Wildlife detection looks like a solved object-detection problem until you try it.
+      Animals appear at night, at distance, partly hidden by brush, across twelve species
+      that share silhouettes. I worked through three approaches before one held up.
+    </p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <h3>YOLO-World, zero-shot</h3>
+      <p>
+        Open-vocabulary detection straight out of the box. Fast to try, and too imprecise
+        on the species distinctions that matter.
+      </p>
+    </div>
+    <div class="step">
+      <h3>YOLO, fine-tuned</h3>
+      <p>
+        The obvious next move: train on our own labeled clips. Our dataset was too small
+        to teach a detector every species across the lighting a real roadside sees.
+      </p>
+    </div>
+    <div class="step">
+      <h3>CLIP, zero-shot — 94–99% per species</h3>
+      <p>
+        Instead of training a classifier, describe the classes in language and let a
+        vision-language model match images against those descriptions. No training run and
+        no labeling bottleneck — and the species list becomes editable text rather than a
+        retraining job. Prompt wording turned out to matter as much as any hyperparameter.
+      </p>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="stack-row"><div class="stack-k">Bear</div><div class="stack-v">99%</div></div>
+    <div class="stack-row"><div class="stack-k">Deer · Raccoon · Coyote</div><div class="stack-v">98%</div></div>
+    <div class="stack-row"><div class="stack-k">Fox</div><div class="stack-v">96%</div></div>
+    <div class="stack-row"><div class="stack-k">Moose · Elk</div><div class="stack-v">95%</div></div>
+    <div class="stack-row"><div class="stack-k">Wild boar</div><div class="stack-v">94%</div></div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      The lesson I keep from this: with a small dataset, a large pre-trained model used
+      well beats a smaller model trained on whatever you can afford to label. We got
+      further by not training at all.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Shipping it</span>
+    <h2>Fitting the model into 300 MB</h2>
+    <p>
+      A working model on a laptop is not a deployed system. Our inference stack started at
+      roughly <strong>1.5 GB</strong> — well past what the cloud instance could hold, which
+      meant the service would come up looking healthy and then die under real load.
+    </p>
+    <p>
+      Converting to <strong>ONNX Runtime</strong> brought it to about <strong>300 MB</strong>,
+      an 80% reduction, and that is what separated a demo from something that stays up.
+    </p>
+  </div>
+
+  <div class="stack">
+    <div class="stack-row">
+      <div class="stack-k">Capture</div>
+      <div class="stack-v">A Raspberry Pi camera unit at the roadside, streaming continuously.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Transport</div>
+      <div class="stack-v">WebRTC to the hosted inference service. The peer-to-peer connection was the least stable part of the system and took real NAT traversal debugging.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Inference</div>
+      <div class="stack-v">CLIP zero-shot classification on ONNX Runtime, hosted on Render.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Alert</div>
+      <div class="stack-v">A Flutter mobile app with map-based location, delivered in under a second end to end.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Deterrent</div>
+      <div class="stack-v">Species-specific tones played at the roadside — a 15 kHz pulse for deer, an 800 Hz sweep for bears — to move the animal before the car arrives.</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      The deterrent is the part I like most as product thinking. Warning the driver only
+      solves half of it; the other half is getting the animal off the road. Different
+      species hear different ranges, so a single tone would have been useless — the
+      detection has to be species-aware for the response to be.
+    </p>
+  </div>
+
+  <figure>
+    <div class="figure-frame">
+      <video src="../assets/wildsafe-deterrent-demo.mp4" poster="../assets/wildsafe-deterrent-demo.jpg" autoplay muted loop playsinline controls
+             aria-label="Screen recording of the interactive deterrent demo: buttons for Deer Deterrent (15 kHz pulse), Bear Deterrent (800 Hz sweep), Coyote Deterrent, Driver Alert and Stop Sound are clicked in turn, and a status line reads 'Playing: real ultrasonic deterrent from demo'."></video>
+    </div>
+    <figcaption>
+      The deterrent demo from our presentation. Each button plays the actual deterrent
+      sound the system fires when it detects that species.
+    </figcaption>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">Outcome</span>
+    <h2>What it does now</h2>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-n">94–99%</div>
+      <div class="metric-l">Detection accuracy per species, after prompt engineering</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">&lt;1s</div>
+      <div class="metric-l">Camera to phone alert, end to end</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">80%</div>
+      <div class="metric-l">Reduction in model footprint</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">12</div>
+      <div class="metric-l">Species classified with no training data</div>
+    </div>
+  </div>
+
+  <div class="narrow">
+    <p>
+      We did a great job on this one. The model is accurate, the whole chain runs from
+      camera to phone in under a second, and the project won IEEE Quarterly Projects in
+      Spring 2026.
+    </p>
+    <p>
+      The same camera also watches for people — telling ordinary activity apart from
+      someone fallen or in distress. That is the pose-estimation problem I went on to build
+      properly in <a href="perceptra.html" style="color:var(--teal);">Perceptra</a>.
+    </p>
+
+    <h3 style="margin-top:40px;">Where it would go next</h3>
+    <p>
+      Solar-powered roadside units so deployment does not depend on mains power; edge
+      inference directly on a Raspberry Pi 5 to take the network off the critical path;
+      and pilots with a state DOT on corridors that already have collision histories. The
+      technical work is further along than the deployment story — a model that works is not
+      yet a system anyone has agreed to install.
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <a class="next" href="bloom.html">
+    <span class="next-l">Next project</span>
+    <span class="next-t">Bloom →</span>
+  </a>
+</div>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-links">
+      <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+      <a href="https://devpost.com/software/wildwatch-a-wildlife-detection-system-for-road-safety-3djoa9">Devpost</a>
+      <a href="https://github.com/Igkerdouki/wildsafe-ml-service">Repository</a>
+      <a href="../index.html">All work</a>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="../site.js"></script>
+</body>
+</html>
