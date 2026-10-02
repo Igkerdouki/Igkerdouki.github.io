@@ -313,77 +313,81 @@
   start();
 })();
 
-/* GeoSync case study: the plume follows the wind, and the wind follows the pointer. */
+/* GeoSync case study: California's counties, shaded by pesticide use. Hover or click a county. */
 
 (function () {
   var hero = document.querySelector('.geo-hero');
   if (!hero) return;
 
   var svg = hero.querySelector('.geo-map');
-  var plume = svg.querySelector('.geo-plume');
-  var needle = svg.querySelector('.geo-needle');
-  var windLabel = svg.querySelector('.geo-wind');
+  var group = svg.querySelector('.geo-counties');
+  var counties = Array.prototype.slice.call(svg.querySelectorAll('.geo-county'));
+  if (!counties.length) return;
+  var ring = svg.querySelector('.geo-ring');
+  var pin = svg.querySelector('.geo-pin');
   var statusText = hero.querySelector('.geo-status-text');
-  var marks = Array.prototype.slice.call(svg.querySelectorAll('.geo-mark'));
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var SRC = { x: 1010, y: 330 };
-  var NAMES = ['E', 'SE', 'S', 'SW', 'W', 'NW', 'N', 'NE'];
-  var angle = -70, aim = -70, steering = false, t = 0;
 
-  /* is this point inside the outer plume ellipse, once the plume is turned to `angle`? */
-  function inPlume(mark) {
-    var dx = parseFloat(mark.getAttribute('data-x')) - SRC.x;
-    var dy = parseFloat(mark.getAttribute('data-y')) - SRC.y;
-    var a = angle * Math.PI / 180;
-    var along = dx * Math.cos(a) + dy * Math.sin(a);
-    var across = -dx * Math.sin(a) + dy * Math.cos(a);
-    var ex = (along - 264) / 300, ey = across / 96;
-    return ex * ex + ey * ey < 1;
+  /* the six heaviest counties, for the tour that runs until someone takes over */
+  var tour = counties.slice().sort(function (a, b) {
+    return a.getAttribute('data-rank') - b.getAttribute('data-rank');
+  }).slice(0, 6);
+  var current = null, pinned = null, hovering = false, step = 0;
+
+  function pounds(n) {
+    return n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'K' : String(Math.round(n));
   }
 
-  function render() {
-    plume.setAttribute('transform', 'rotate(' + angle.toFixed(1) + ' ' + SRC.x + ' ' + SRC.y + ')');
-    needle.setAttribute('transform', 'rotate(' + angle.toFixed(1) + ')');
-    var turn = ((angle % 360) + 360) % 360;
-    windLabel.textContent = 'Wind to ' + NAMES[Math.round(turn / 45) % 8];
+  function show(county) {
+    if (!county || county === current) return;
+    if (current) current.classList.remove('is-on');
+    current = county;
+    county.classList.add('is-on');
+    group.appendChild(county); /* draw it last so its outline sits on top */
+    var x = county.getAttribute('data-cx'), y = county.getAttribute('data-cy');
+    ring.setAttribute('cx', x); ring.setAttribute('cy', y);
+    pin.setAttribute('cx', x); pin.setAttribute('cy', y);
+    statusText.textContent = county.getAttribute('data-county') + ' County · ' +
+      pounds(+county.getAttribute('data-lbs')) + ' lbs applied in 2023 · #' +
+      county.getAttribute('data-rank') + ' of ' + counties.length;
+  }
 
-    var reached = null;
-    marks.forEach(function (mark) {
-      var hit = inPlume(mark);
-      mark.classList.toggle('is-hit', hit);
-      if (hit && !reached) reached = mark.getAttribute('data-name');
-    });
-    hero.classList.toggle('is-hit', !!reached);
-    statusText.textContent = reached
-      ? 'Drift is reaching ' + reached + ' — alert sent'
-      : 'The school is outside the drift path';
+  /* the map sits behind the headline, so find the county under the pointer by hand */
+  function countyAt(x, y) {
+    var stack = document.elementsFromPoint(x, y);
+    for (var i = 0; i < stack.length; i++) {
+      if (stack[i].classList && stack[i].classList.contains('geo-county')) return stack[i];
+    }
+    return null;
   }
 
   function fit() {
-    svg.setAttribute('viewBox', window.innerWidth <= 900 ? '790 60 620 520' : '0 0 1440 640');
-  }
-
-  function frame() {
-    t += 0.016;
-    /* until someone takes over, the wind swings back and forth across the school */
-    if (!steering) aim = -28 + 58 * Math.sin(t * 0.55);
-    angle += ((((aim - angle) % 360) + 540) % 360 - 180) * 0.07;
-    render();
-    requestAnimationFrame(frame);
+    svg.setAttribute('viewBox', window.innerWidth <= 900 ? '800 0 570 640' : '0 0 1440 640');
   }
 
   hero.addEventListener('pointermove', function (e) {
-    var pt = svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
-    var p = pt.matrixTransform(svg.getScreenCTM().inverse());
-    aim = Math.atan2(p.y - SRC.y, p.x - SRC.x) * 180 / Math.PI;
-    steering = true;
-    if (reduced) { angle = aim; render(); }
+    var county = countyAt(e.clientX, e.clientY);
+    hovering = !!county;
+    hero.style.cursor = county ? 'pointer' : '';
+    if (county && !pinned) show(county);
   });
-  hero.addEventListener('pointerleave', function () { steering = false; });
+  hero.addEventListener('pointerleave', function () { hovering = false; });
+  hero.addEventListener('click', function (e) {
+    var county = countyAt(e.clientX, e.clientY);
+    if (!county) return;
+    pinned = pinned === county ? null : county;
+    hero.classList.toggle('is-pinned', !!pinned);
+    show(county);
+  });
 
   fit();
   window.addEventListener('resize', fit);
-  render();
-  if (!reduced) requestAnimationFrame(frame);
+  show(tour[0]);
+  if (!reduced) {
+    setInterval(function () {
+      if (hovering || pinned) return;
+      step = (step + 1) % tour.length;
+      show(tour[step]);
+    }, 2600);
+  }
 })();
