@@ -391,3 +391,55 @@
     }, 2600);
   }
 })();
+
+/* Selected work: when a scene scrolls into view its viewfinder locks on and its recording plays. */
+
+(function () {
+  var scenes = Array.prototype.slice.call(document.querySelectorAll('.scene'));
+  if (!scenes.length) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Paint the stage so each scene sits on its own ground colour, blending in the gaps between. */
+  var stage = document.querySelector('.stage');
+  function paintGround() {
+    var top = stage.getBoundingClientRect().top, height = stage.offsetHeight;
+    if (!height) return;
+    var stops = [];
+    scenes.forEach(function (scene, i) {
+      var ground = getComputedStyle(scene).getPropertyValue('--ground').trim();
+      if (!ground) return;
+      var r = scene.getBoundingClientRect();
+      var from = i === 0 ? 0 : (r.top - top) / height * 100;
+      var to = i === scenes.length - 1 ? 100 : (r.bottom - top) / height * 100;
+      stops.push(ground + ' ' + from.toFixed(2) + '%', ground + ' ' + to.toFixed(2) + '%');
+    });
+    if (stops.length) stage.style.setProperty('--grounds', 'linear-gradient(180deg, ' + stops.join(', ') + ')');
+  }
+  if (stage) {
+    paintGround();
+    window.addEventListener('load', paintGround);
+    window.addEventListener('resize', paintGround);
+  }
+
+  if (reduced || !('IntersectionObserver' in window)) {
+    scenes.forEach(function (scene) {
+      scene.classList.add('is-live');
+      var video = scene.querySelector('video');
+      if (video) video.controls = true;
+    });
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var video = entry.target.querySelector('video');
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-live');
+        if (video) { var playing = video.play(); if (playing && playing.catch) playing.catch(function () {}); }
+      } else if (video) {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.35 });
+  scenes.forEach(function (scene) { io.observe(scene); });
+})();
