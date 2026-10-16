@@ -59,7 +59,7 @@
   });
 })();
 
-/* Hero: the questions panel and the avatar that looks toward the pointer. */
+/* Hero: the questions panel. */
 
 (function () {
   var wonder = document.querySelector('.wonder');
@@ -92,7 +92,7 @@
     wonder.style.setProperty('--tint', items[current].style.getPropertyValue('--tint'));
     count.textContent = (current + 1) + ' of ' + items.length;
 
-    if (!reduced) {
+    if (!reduced && avatar) {
       avatar.classList.remove('is-hop');
       void avatar.getBoundingClientRect();
       avatar.classList.add('is-hop');
@@ -116,9 +116,9 @@
       show(current + 1);
     }, 7000);
 
-    /* ---- eyes follow the pointer ---- */
+    /* ---- eyes follow the pointer (only when an avatar is on the page) ---- */
     var frame = null;
-    window.addEventListener('pointermove', function (e) {
+    if (avatar) window.addEventListener('pointermove', function (e) {
       if (frame) return;
       frame = requestAnimationFrame(function () {
         frame = null;

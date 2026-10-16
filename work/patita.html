@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patita — Ioanna Gkerdouki</title>
+<meta name="description" content="Patita: two silly 3D toy-games, gymnastics and ice skating, where three girls tumble, skate, sparkle and fall over with a honk. Built with three.js and coming to the App Store.">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
+<style>
+  /* Patita has its own look: a night-sky toy box, candy colours, bouncy type. */
+  .pat {
+    --night: #140a2e;
+    --night-2: #22124a;
+    --lilac: #c9a2ff;
+    --pink: #ff7fb6;
+    --mint: #7ff0c8;
+    --sun: #ffd65c;
+    --paper: #fff8ef;
+    --toy: 'Fredoka', ui-rounded, system-ui, sans-serif;
+    background: var(--night);
+    color: var(--paper);
+    overflow: hidden;
+  }
+
+  .pat h1, .pat h2, .pat h3 { font-family: var(--toy); letter-spacing: -0.01em; }
+  .pat p { color: rgba(255, 248, 239, .78); }
+
+  /* ---------- hero ---------- */
+  .pat-hero {
+    position: relative;
+    isolation: isolate;
+    padding: 110px 0 120px;
+    background:
+      radial-gradient(60% 70% at 80% 30%, rgba(201, 162, 255, .28), transparent 70%),
+      radial-gradient(50% 60% at 10% 90%, rgba(255, 127, 182, .22), transparent 70%),
+      linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+  }
+
+  .pat-stars { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .pat-stars i {
+    position: absolute; width: 4px; height: 4px; border-radius: 50%;
+    background: #fff; opacity: .7;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle { 50% { opacity: .15; transform: scale(.6); } }
+
+  .pat-hero-grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: clamp(30px, 5vw, 70px); align-items: center;
+  }
+
+  .pat-kicker {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-radius: 100px;
+    background: rgba(255, 214, 92, .14); color: var(--sun);
+    font-family: var(--toy); font-weight: 600; font-size: .95rem;
+  }
+
+  .pat-words {
+    margin: 24px 0 22px;
+    font-size: clamp(3.4rem, 8vw, 6.4rem); line-height: .95; font-weight: 700;
+  }
+  .pat-words span { display: inline-block; animation: bounce-in .9s cubic-bezier(.34,1.56,.64,1) both; }
+  .pat-words span:nth-child(1) { color: var(--pink);  animation-delay: .05s; }
+  .pat-words span:nth-child(2) { color: var(--lilac); animation-delay: .2s; }
+  .pat-words span:nth-child(3) { color: var(--mint);  animation-delay: .35s; }
+  .pat-words span:nth-child(4) { color: var(--sun);   animation-delay: .5s; }
+  .pat-words span:hover { animation: wobble .6s ease-in-out; }
+
+  @keyframes bounce-in { from { opacity: 0; transform: translateY(40px) scale(.6) rotate(-8deg); } }
+  @keyframes wobble { 25% { transform: rotate(-7deg) scale(1.08); } 75% { transform: rotate(6deg) scale(1.05); } }
+
+  .pat-lead { font-size: 1.25rem; line-height: 1.55; max-width: 32rem; }
+
+  .pat-plays { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .pat-play {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 24px; border-radius: 100px;
+    font-family: var(--toy); font-weight: 600; font-size: 1.1rem;
+    text-decoration: none; color: var(--night);
+    box-shadow: 0 6px 0 rgba(0,0,0,.35);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .pat-play:hover { transform: translateY(-3px); box-shadow: 0 9px 0 rgba(0,0,0,.35); }
+  .pat-play:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
+  .pat-play.gym { background: var(--pink); }
+  .pat-play.ice { background: var(--mint); }
+  .pat-note { margin-top: 16px; font-size: .9rem; color: rgba(255,248,239,.55); }
+
+  /* the screenshot, as a tablet that tilts toward the pointer */
+  .pat-tablet {
+    position: relative;
+    padding: 14px; border-radius: 34px;
+    background: linear-gradient(145deg, #3a2470, #1b0f3c);
+    box-shadow: 0 50px 90px -40px rgba(0,0,0,.8), inset 0 0 0 2px rgba(255,255,255,.08);
+    transform: perspective(1200px) rotateY(var(--ry, -9deg)) rotateX(var(--rx, 4deg));
+    transition: transform .25s ease-out;
+  }
+  .pat-tablet img { display: block; width: 100%; border-radius: 22px; }
+  .pat-sticker {
+    position: absolute; padding: 10px 16px; border-radius: 16px;
+    font-family: var(--toy); font-weight: 600; color: var(--night);
+    box-shadow: 0 10px 20px -8px rgba(0,0,0,.6);
+  }
+  .pat-sticker.s1 { background: var(--sun); left: -22px; bottom: 40px; transform: rotate(-6deg); }
+  .pat-sticker.s2 { background: var(--lilac); right: -14px; top: -18px; transform: rotate(5deg); }
+
+  /* ---------- sections ---------- */
+  .pat-section { padding: 90px 0; position: relative; }
+  .pat-section h2 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 700; margin-bottom: 14px; color: var(--paper); }
+  .pat-eyebrow { font-family: var(--toy); font-weight: 600; color: var(--pink); letter-spacing: .04em; margin-bottom: 10px; display: block; }
+
+  .pat-girls { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-top: 34px; }
+  .pat-girl {
+    padding: 26px 24px; border-radius: 26px;
+    background: var(--c); color: var(--night);
+    transform: rotate(var(--r));
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .pat-girl:hover { transform: rotate(0) translateY(-8px) scale(1.03); }
+  .pat-girl h3 { font-size: 1.8rem; margin: 0; }
+  .pat-girl b { display: block; font-family: var(--toy); font-weight: 600; margin: 2px 0 10px; opacity: .75; }
+  .pat-girl p { color: rgba(20,10,46,.8); margin: 0; }
+
+  .pat-games { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 26px; margin-top: 34px; }
+  .pat-game {
+    border-radius: 30px; overflow: hidden;
+    background: rgba(255,255,255,.05);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    transition: transform .3s;
+  }
+  .pat-game:hover { transform: translateY(-6px); }
+  .pat-game img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .6s; }
+  .pat-game:hover img { transform: scale(1.05); }
+  .pat-game-body { padding: 24px 26px 28px; }
+  .pat-game h3 { font-size: 1.9rem; margin: 0 0 4px; color: var(--paper); }
+  .pat-game .tag { font-family: var(--toy); font-weight: 600; color: var(--sun); }
+  .pat-game ul { margin: 16px 0 22px; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .pat-game li { color: rgba(255,248,239,.8); }
+  .pat-game li::before { content: "✦"; color: var(--lilac); margin-right: 10px; }
+
+  .pat-strip { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; margin-top: 34px; }
+  .pat-strip img { width: 100%; height: 100%; object-fit: cover; border-radius: 26px; }
+
+  .pat-build { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 30px; }
+  .pat-build div { padding: 22px; border-radius: 22px; background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+  .pat-build h3 { font-size: 1.2rem; margin: 0 0 6px; color: var(--mint); }
+  .pat-build p { margin: 0; font-size: .95rem; }
+
+  .pat-grownups {
+    margin-top: 10px; padding: 34px clamp(24px, 4vw, 46px);
+    border-radius: 30px; background: var(--paper); color: var(--night);
+  }
+  .pat-grownups h2 { color: var(--night); }
+  .pat-grownups p { color: rgba(20,10,46,.78); max-width: 46rem; }
+
+  .pat .next { background: rgba(255,255,255,.06); color: var(--paper); }
+  .pat .next-l { color: rgba(255,248,239,.6); }
+
+  @media (max-width: 900px) {
+    .pat-hero-grid, .pat-strip { grid-template-columns: minmax(0, 1fr); }
+    .pat-tablet { transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pat-stars i, .pat-words span { animation: none; }
+    .pat-tablet { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="pat">
+
+<header class="pat-hero">
+  <div class="pat-stars" aria-hidden="true"></div>
+  <div class="wrap pat-hero-grid">
+    <div>
+      <span class="pat-kicker">06 — Patita · Coming to the App Store</span>
+      <h1 class="pat-words"><span>Flip.</span> <span>Twirl.</span> <span>Flop.</span> <span>Giggle.</span></h1>
+      <p class="pat-lead">
+        Two silly 3D toy-games where three unstoppable girls tumble, skate, sparkle and
+        fall over with a honk. No scores, no ads — just play.
+      </p>
+      <div class="pat-plays">
+        <a class="pat-play gym" href="../play/patita-gymnastics.html">🤸 Play Gymnastics</a>
+        <a class="pat-play ice" href="../play/patita-ice-skating.html">⛸️ Play Ice Skating</a>
+      </div>
+      <p class="pat-note">Preview builds, playable right here in the browser. Best on a tablet or laptop.</p>
+    </div>
+
+    <div class="pat-tablet">
+      <img src="../assets/patita-gym-cast.jpg" alt="The three Patita girls lined up on the gymnastics floor in sparkly leotards, with animal judges watching from the side.">
+      <span class="pat-sticker s1">Falls are the best part</span>
+      <span class="pat-sticker s2">3 girls · 2 games</span>
+    </div>
+  </div>
+</header>
+
+<section class="pat-section">
+  <div class="wrap">
+    <span class="pat-eyebrow">Meet the girls</span>
+    <h2>Three stars. Zero brakes.</h2>
+    <div class="pat-girls">
+      <div class="pat-girl" style="--c:#c9a2ff; --r:-2deg;">
+        <h3>FlipPop</h3><b>The chaos goblin</b>
+        <p>Purple buns stuffed with a pencil, a lollipop and one confused bird.</p>
+      </div>
+      <div class="pat-girl" style="--c:#ff9cc6; --r:1.5deg;">
+        <h3>Zuzu</h3><b>The show-off</b>
+        <p>Every landing is a premiere. Blows kisses to the judges.</p>
+      </div>
+      <div class="pat-girl" style="--c:#7ff0c8; --r:-1deg;">
+        <h3>Miko</h3><b>The sleepy daredevil</b>
+        <p>Yawns through a triple flip, sticks it, looks for a snack.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pat-section">
+  <div class="wrap">
+    <span class="pat-eyebrow">Two games</span>
+    <h2>Pick a girl. Dress her up. Tap a trick.</h2>
+    <div class="pat-games">
+      <article class="pat-game">
+        <img src="../assets/patita-play-gym.jpg" alt="A girl in a white leotard on the gymnastics floor, with rings and a trampoline behind her.">
+        <div class="pat-game-body">
+          <h3>Patita Gymnastics</h3>
+          <span class="tag">Bounce it. Flip it. Oops!</span>
+          <ul>
+            <li>Floor, beam, high bar and vault in one big gym</li>
+            <li>A floor routine with music: she dances, you drop in the tricks</li>
+            <li>Animal judges: a cat in a top hat, a bunny in pearls, a bear with a crown</li>
+          </ul>
+          <a class="pat-play gym" href="../play/patita-gymnastics.html">Play Gymnastics</a>
+        </div>
+      </article>
+      <article class="pat-game">
+        <img src="../assets/patita-play-ice.jpg" alt="A girl in a starry dress spinning a pink hoop on the ice rink, a snowman and penguin in the background.">
+        <div class="pat-game-body">
+          <h3>Patita Ice Skating</h3>
+          <span class="tag">Glide, spin, splat, quack!</span>
+          <ul>
+            <li>Rink, jump zone, spin circle and slide lane</li>
+            <li>Hoop, ribbon and ball: throw them sky-high and catch them. Mostly.</li>
+            <li>Penguins waddle past, and you can poke them</li>
+          </ul>
+          <a class="pat-play ice" href="../play/patita-ice-skating.html">Play Ice Skating</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="pat-strip">
+      <img src="../assets/patita-wardrobe.jpg" alt="A rail of glowing space leotards in the gym, with a girl trying one on.">
+      <img src="../assets/patita-moon-rink.jpg" alt="The space rink among the planets, where the girls skate in low gravity.">
+    </div>
+  </div>
+</section>
+
+<section class="pat-section">
+  <div class="wrap">
+    <span class="pat-eyebrow">How I built it</span>
+    <h2>A toy, not a test</h2>
+    <div class="pat-build">
+      <div><h3>3D in the browser</h3><p>Built with three.js: the girls, the gym, the rink and every flip and fall are animated in real time.</p></div>
+      <div><h3>No words, no menus</h3><p>Designed for kids who can't read yet. Everything is a tap on a picture: a girl, an outfit, a trick.</p></div>
+      <div><h3>Falling is the fun</h3><p>Nothing can be done wrong. A fall ends in a honk or a squeaky scream, so the mistake becomes the joke.</p></div>
+      <div><h3>From web to iPhone</h3><p>The same code ships as a native iOS app through Capacitor, on its way to the App Store.</p></div>
+    </div>
+
+    <div class="pat-grownups" style="margin-top:40px;">
+      <h2>For grown-ups</h2>
+      <p>No ads. No scores. No pressure. Patita is a toy, not a test — falling over is the best part.</p>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <a class="next" href="perceptra.html">
+    <span class="next-l">Back to the start</span>
+    <span class="next-t">Perceptra →</span>
+  </a>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-links">
+      <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+      <a href="../index.html">All work</a>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="../site.js"></script>
+<script>
+  /* sprinkle the night sky, and let the tablet lean toward the pointer */
+  (function () {
+    var sky = document.querySelector('.pat-stars');
+    for (var i = 0; i < 46; i++) {
+      var s = document.createElement('i');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
+      var size = (2 + Math.random() * 3).toFixed(1) + 'px';
+      s.style.width = size; s.style.height = size;
+      sky.appendChild(s);
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var tab = document.querySelector('.pat-tablet');
+    window.addEventListener('pointermove', function (e) {
+      var x = e.clientX / window.innerWidth - 0.5, y = e.clientY / window.innerHeight - 0.5;
+      tab.style.setProperty('--ry', (-9 + x * 14).toFixed(1) + 'deg');
+      tab.style.setProperty('--rx', (4 - y * 10).toFixed(1) + 'deg');
+    });
+  })();
+</script>
+</body>
+</html>
