@@ -1227,6 +1227,7 @@ var SFX = {
     noise(.22, .22, 700, 180, 'lowpass', .07); tone(1300, 240, .5, 'sine', .11, .2);
     [0, 1, 2, 3].forEach(function (n) { voice2((330 - n * 28) * (look.pitch || 1), (290 - n * 28) * (look.pitch || 1), .08, .75 + n * .1, 900, .16); });
   },
+  brush: function () { for (var i = 0; i < 9; i++) noise(.11, .06, 4200, 2600, 'bandpass', i * .26); },
   chew: function () { noise(.07, .14, 520, 260, 'lowpass'); }
 };
 // the girls make no voice noises any more: the only voice left is the "ouch" when they fall
@@ -1459,6 +1460,25 @@ function buildGirl() {
     g.wandGlow = new T3.Mesh(new T3.SphereGeometry(17, 14, 10), new T3.MeshBasicMaterial({ color: wcol, transparent: true, opacity: .28, blending: T3.AdditiveBlending, depthWrite: false })); g.wandGlow.position.set(0, 50, 0); wd.add(g.wandGlow);
     for (var wq = 0; wq < 5; wq++) ball3(wd, 1.6, new T3.MeshBasicMaterial({ color: wq % 2 ? 0xFFFFFF : wcol }), Math.cos(wq * 1.9) * (14 + wq * 2), 50 + Math.sin(wq * 2.3) * 14, Math.sin(wq * 1.3) * 8);
   }
+  // jewellery (paid): pearls, a heart locket, dangly earrings or stacks of bangles
+  var jw = look.jewel, gold4 = m3('#FFD23F', .2, .8);
+  if (jw === 'pearls' || jw === 'heart') {
+    var pm = jw === 'pearls' ? new T3.MeshStandardMaterial({ color: 0xFFF6F0, roughness: .15, metalness: .3, envMap: R3.envMap }) : gold4;
+    for (var pa4 = -1.9; pa4 <= 1.91; pa4 += .2) { var fr4 = Math.max(0, Math.cos(pa4)), pr4 = 13.4 + 2.8 * fr4, pb = ball3(g.torso, jw === 'pearls' ? 2.3 : 1.3, pm, Math.cos(pa4) * pr4, 45.5 - 6 * fr4, Math.sin(pa4) * pr4); pb.scale.z = 1 / 1.34; }
+    if (jw === 'heart') {
+      var hs = new T3.Shape(); hs.moveTo(0, -5); hs.bezierCurveTo(-7, 0, -5, 6, 0, 3); hs.bezierCurveTo(5, 6, 7, 0, 0, -5);
+      var hm = add3(g.torso, new T3.ExtrudeGeometry(hs, { depth: 2, bevelEnabled: true, bevelSize: .8, bevelThickness: .8, bevelSegments: 2 }), new T3.MeshStandardMaterial({ color: 0xFF3D8B, metalness: .5, roughness: .15, emissive: new T3.Color('#FF3D8B'), emissiveIntensity: .35, envMap: R3.envMap }), 17.6, 36, 0);
+      hm.rotation.y = Math.PI / 2; hm.scale.set(1.7, 1.7, 1 / 1.34); hm.position.x = 18.6;
+    }
+  }
+  if (jw === 'earrings') [-1, 1].forEach(function (sd) { ball3(H, 3.2, gold4, 4, -16, sd * 41); rod3(H, .9, 8, gold4, 4, -21, sd * 41); var em = add3(H, new T3.OctahedronGeometry(6.5), new T3.MeshStandardMaterial({ color: 0x7FE9E2, metalness: .6, roughness: .05, emissive: new T3.Color('#7FE9E2'), emissiveIntensity: .5, envMap: R3.envMap }), 4, -31, sd * 41); em.scale.y = 1.4; });
+  if (jw === 'bangles') ['L', 'R'].forEach(function (s5) { ['#FFD23F', '#FF3D8B', '#7FE9E2'].forEach(function (bc, n5) { add3(g['hd' + s5], new T3.TorusGeometry(8.2, 1.5, 8, 22), m3(bc, .2, .7), 0, -2 - n5 * 3.4, 0).rotation.x = Math.PI / 2; }); });
+  // hairbrush (paid): a magic brush that floats beside her head and brushes her hair, only while brushing
+  g.brush = new T3.Group(); H.add(g.brush); g.brush.scale.setScalar(1.5);
+  rod3(g.brush, 2.4, 26, m3('#FFD23F', .25, .6), 0, 6, 0);
+  var bh = ball3(g.brush, 8, m3('#FF86B6', .35), 0, 24, 0); bh.scale.set(1, 1.35, .45);
+  for (var bq2 = 0; bq2 < 12; bq2++) rod3(g.brush, .7, 4, m3('#FFFFFF', .6), -4.5 + (bq2 % 4) * 3, 18 + Math.floor(bq2 / 4) * 5, 4.5).rotation.x = Math.PI / 2;
+  g.brush.visible = false;
   g.juice = new T3.Group(); root.add(g.juice); rod3(g.juice, 10, 18, m3('#FF3D8B', .35), 0, 0, 0); rod3(g.juice, 8.6, 2, m3('#6B3A1E', .5), 0, 9, 0); ball3(g.juice, 4, m3('#FFFFFF', .7), 2, 11, 1); ball3(g.juice, 3.4, m3('#FFFFFF', .7), -3, 11, -2); add3(g.juice, new T3.TorusGeometry(6, 1.8, 8, 16), m3('#FF3D8B', .35), 11, 0, 0);
   g.loons = new T3.Group(); root.add(g.loons); g.loons.visible = false;
   [['#FF3D8B', -16, 78], ['#FFD23F', 2, 96], ['#12C9C2', 18, 74]].forEach(function (q) {
@@ -1839,6 +1859,7 @@ function poseGirl(g, p, pl, face, blink, front) {
   g.head.position.set(hd3[0], hd3[1], 0); g.head.rotation.z = J.hA * D + Math.PI;
   var f = pl.sx < 0 ? -1 : 1, turn = .5 * (1 - .65 * p.hang);
   var upw = Math.cos(g.head.rotation.z); turn *= upw; g.turn.rotation.y = -.42 * upw * (f > 0 ? 1 : -1);
+  if (g.brush) { var bt2 = clock - brushT; g.brush.visible = bt2 < 2.4; if (g.brush.visible) { var bsw = Math.sin(clock * 11); g.brush.position.set(-6 + bsw * 8, 18 + bsw * 12, 46); g.brush.rotation.set(-.35, 0, 2.6 + bsw * .35); } }
   if (g.wandStar) { g.wandStar.rotation.y = clock * 3; g.wandGlow.scale.setScalar(1 + Math.sin(clock * 6) * .18); }
   if (g.wings) g.wings.forEach(function (w) { w.rotation.y = w.userData.sd * (-.75 + Math.sin(clock * 12) * .4); });
   if (g.halo) g.halo.material.opacity = .3 + .15 * Math.sin(clock * 4);
@@ -2095,7 +2116,7 @@ function pump() {
   if (target != null && Math.abs(target - x) > 4) runTo = { x: target, f: f, then: function () { begin(id); } };
   else { if (target != null) x = target; facing = f; begin(id); }
 }
-var routine = null, gift = null, fallT = -9, yellT = -9, pokeFace = 'silly';
+var routine = null, gift = null, fallT = -9, yellT = -9, brushT = -9, pokeFace = 'silly';
 function routineNext() {
   if (!routine || cur || runTo) return;
   if (!MOVES[A.id][RT_MOVES[0]]) { stopRoutine(); return; }
@@ -2653,16 +2674,40 @@ function swatches(boxId, key, list) {
   });
 }
 // wigs: a few try-on hairdos in candy colours; the first tile puts her own hair back
-var WIGS = [null, { style: 'curls', hair: '#FF5FB0' }, { style: 'messy', hair: '#FFD23F' }, { style: 'bob', hair: '#12C9C2' }, { style: 'curls', hair: '#F4E9FF' }, { style: 'messy', hair: '#3A6BFF' }, { style: 'bob', hair: '#FF86B6' }, { style: 'curls', hair: '#18B85A' }];
+var WIGS = [null, { style: 'curls', hair: '#FF5FB0' }, { style: 'messy', hair: '#FFD23F' }, { style: 'bob', hair: '#12C9C2' }, { style: 'curls', hair: '#F4E9FF', premium: true }, { style: 'messy', hair: '#3A6BFF', premium: true }, { style: 'bob', hair: '#FF86B6', premium: true }, { style: 'curls', hair: '#18B85A', premium: true }]; // the last four wigs are part of the paid version
 function ownHair() { var b = CAST.filter(function (q) { return q.name === look.name; })[0] || CAST[0]; return { style: b.style, hair: b.hair }; }
+// a paid wig saved from an earlier visit goes back to her own hair until the game is unlocked again
+if (!spaceOpen && look.jewel) look.jewel = null;
+if (!spaceOpen && WIGS.some(function (w) { return w && w.premium && w.style === look.style && w.hair === look.hair; })) { var oh = (CAST.filter(function (q) { return q.name === look.name; })[0] || CAST[0]); look.style = oh.style; look.hair = oh.hair; }
 function buildDress() {
   var shelf = document.getElementById('dz-shelf'), d = document.createElement('div'); shelf.textContent = ''; document.getElementById('dz-cats').textContent = '';
   var d0 = document.createElement('div'); d0.className = 'row'; d0.id = 'dz-r0'; shelf.appendChild(d0);
   WIGS.forEach(function (w, i) {
-    var h = w || ownHair();
+    var h = w || ownHair(), wl = w && w.premium && !spaceOpen;
     tile('dz-r0', Math.max(56, Math.min(84, Math.floor((window.innerWidth - 40) / WIGS.length) - 16)), i ? 'Wig ' + i : 'Her own hair', look.style === h.style && look.hair === h.hair, function (c) {
       c.fillStyle = '#FFF3FB'; c.fillRect(0, 0, 96, 96); c.save(); withLook({ hair: h.hair }, function () { drawHairIcon(c, h.style); }); c.restore();
-    }, function () { look = mix(look, h); sparkleBurst(); }, true);
+      if (wl) { c.fillStyle = 'rgba(27,15,54,.55)'; c.fillRect(0, 0, 96, 96); c.strokeStyle = '#FFD23F'; c.lineWidth = 5; c.beginPath(); c.arc(48, 40, 11, Math.PI, 0); c.stroke(); c.fillStyle = '#FFD23F'; rr(c, 32, 40, 32, 26, 6); c.fill(); c.fillStyle = INK; c.beginPath(); c.arc(48, 52, 4, 0, 7); c.fill(); }
+    }, function () { if (wl) { openGate('space'); return false; } look = mix(look, h); sparkleBurst(); }, true);
+  });
+  // paid extras: a hairbrush to brush her hair, and jewellery to put on
+  var d2 = document.createElement('div'); d2.className = 'row'; d2.id = 'dz-r2'; shelf.appendChild(d2);
+  var xl = !spaceOpen, xs = Math.max(56, Math.min(84, Math.floor((window.innerWidth - 40) / 7) - 16));
+  function lockIcon(c) { c.fillStyle = 'rgba(27,15,54,.55)'; c.fillRect(0, 0, 96, 96); c.strokeStyle = '#FFD23F'; c.lineWidth = 5; c.beginPath(); c.arc(48, 40, 11, Math.PI, 0); c.stroke(); c.fillStyle = '#FFD23F'; rr(c, 32, 40, 32, 26, 6); c.fill(); c.fillStyle = INK; c.beginPath(); c.arc(48, 52, 4, 0, 7); c.fill(); }
+  tile('dz-r2', xs, 'Hairbrush', false, function (c) {
+    c.fillStyle = '#FFF3FB'; c.fillRect(0, 0, 96, 96); c.save(); c.translate(48, 50); c.rotate(-.6); c.lineWidth = 3; c.strokeStyle = INK;
+    c.fillStyle = '#FFD23F'; rr(c, -5, 4, 10, 34, 5); c.fill(); c.stroke(); c.fillStyle = '#FF86B6'; c.beginPath(); c.ellipse(0, -14, 17, 22, 0, 0, 7); c.fill(); c.stroke();
+    c.fillStyle = '#fff'; for (var k = 0; k < 12; k++) { c.beginPath(); c.arc(-8 + (k % 4) * 5.5, -26 + Math.floor(k / 4) * 10, 2, 0, 7); c.fill(); } c.restore(); if (xl) lockIcon(c);
+  }, function () { if (xl) { openGate('space'); return false; } brushT = clock; SFX.brush(); setTimeout(sparkleBurst, 1900); return false; }, true);
+  [null, 'pearls', 'heart', 'earrings', 'bangles'].forEach(function (j) {
+    tile('dz-r2', xs, j ? 'Jewellery: ' + j : 'No jewellery', (look.jewel || null) === j, function (c) {
+      c.fillStyle = '#FFF3FB'; c.fillRect(0, 0, 96, 96); c.save(); c.translate(48, 48); c.strokeStyle = INK; c.lineWidth = 2.5;
+      if (!j) { c.strokeStyle = '#C9A7FF'; c.lineWidth = 6; c.beginPath(); c.arc(0, 0, 22, 0, 7); c.moveTo(-15, 15); c.lineTo(15, -15); c.stroke(); }
+      if (j === 'pearls' || j === 'heart') { for (var a = -2.4; a <= -.7; a += .14) { c.fillStyle = j === 'pearls' ? '#FFF6F0' : '#FFD23F'; c.beginPath(); c.arc(Math.cos(a + 1.57 * 2) * -26, Math.sin(-a) * 26 - 20, j === 'pearls' ? 5 : 3, 0, 7); c.fill(); c.stroke(); } }
+      if (j === 'heart') { c.fillStyle = '#FF3D8B'; c.beginPath(); c.moveTo(0, 26); c.bezierCurveTo(-18, 12, -12, -2, 0, 8); c.bezierCurveTo(12, -2, 18, 12, 0, 26); c.fill(); c.stroke(); }
+      if (j === 'earrings') [-1, 1].forEach(function (sd) { c.fillStyle = '#FFD23F'; c.beginPath(); c.arc(sd * 18, -16, 5, 0, 7); c.fill(); c.stroke(); c.fillStyle = '#7FE9E2'; c.beginPath(); c.moveTo(sd * 18, -8); c.lineTo(sd * 18 + 9, 8); c.lineTo(sd * 18, 26); c.lineTo(sd * 18 - 9, 8); c.closePath(); c.fill(); c.stroke(); });
+      if (j === 'bangles') ['#FFD23F', '#FF3D8B', '#7FE9E2'].forEach(function (bc, n) { c.strokeStyle = INK; c.lineWidth = 9; c.beginPath(); c.ellipse(0, -16 + n * 15, 24, 9, 0, 0, 7); c.stroke(); c.strokeStyle = bc; c.lineWidth = 5; c.stroke(); });
+      c.restore(); if (j && xl) lockIcon(c);
+    }, function () { if (j && xl) { openGate('space'); return false; } look.jewel = j; sparkleBurst(); }, true);
   });
   d.className = 'row'; d.id = 'dz-r1'; shelf.appendChild(d);
   OUTFITS.forEach(function (o, i) {
