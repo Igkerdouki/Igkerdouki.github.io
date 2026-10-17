@@ -189,6 +189,9 @@
   .gate-card h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 46px; color: var(--sun); text-shadow: 4px 4px 0 var(--pink); }
   .gate-card p { margin: 0; font-size: 18px; line-height: 1.4; }
   .gate-card p.small { font-size: 14px; color: #C9BFE8; }
+  .gate-card .adult p { font-size: 20px; }
+  .ga-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .ga-btns button { font: inherit; font-size: 24px; font-weight: 700; width: 64px; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
   .gate-card .play { margin: 6px 0 0; font-size: 26px; padding: 12px 34px 10px; position: relative; overflow: hidden; }
   .gate-card .play.holding { background: linear-gradient(90deg, var(--teal) 50%, var(--pink) 50%); background-size: 200% 100%; background-position: 100% 0; animation: fill 1.6s linear forwards; }
   @keyframes fill { to { background-position: 0 0; } }
@@ -334,8 +337,11 @@
   <div class="gate-card">
     <h2 id="gate-title"></h2>
     <p id="gate-text"></p>
-    <p class="small">Grown-ups: in the app this is where the purchase goes. While the games are previews, one tap opens everything.</p>
+    <p class="small" id="gate-small">Grown-ups: in the app this is where the purchase goes. While the games are previews, one tap opens everything.</p>
+    <div class="adult" id="gate-adult" hidden><p>Grown-ups only: what is <b id="ga-q"></b>?</p><div class="ga-btns" id="ga-btns"></div></div>
+    <p class="small" id="gate-msg" hidden></p>
     <button class="play" id="gate-hold">Unlock</button>
+    <button class="pill" id="gate-restore" hidden>Restore purchase</button>
     <button class="pill" id="gate-close">Not now</button>
   </div>
 </div>
@@ -2812,15 +2818,59 @@ function openGate(kind, target) {
 btnSpace.addEventListener('click', function () { ac(); if (world === 'space') setWorld('home'); else if (spaceOpen) setWorld('space'); else openGate('space'); });
 document.getElementById('btn-portal').addEventListener('click', function () { btnSpace.click(); });
 function holdEnd() { clearTimeout(holdT); gateHold.classList.remove('holding'); }
+// opens every paid extra; quiet = at start-up for a family that has already paid
+function unlockAll(quiet) {
+  gate.hidden = true; if (!quiet) SFX.cheer();
+  spaceOpen = stagesOpen = true; btnRelock.hidden = MODE !== 'preview'; document.getElementById('btn-portal').classList.add('open');
+  if (quiet) { if (dressing) buildDress(); return; }
+  if (gateKind === 'space') { setWorld('space'); if (dressing) buildDress(); }
+  else { if (use3D && R3.env) { R3.scene.remove(R3.env); R3.env = null; } setApp(gateTarget || A.id); sparkleBurst(); }
+  if (dressing && use3D) buildRail();
+  if (use3D && !intro) buildGirl();
+}
+// three ways to run: inside the iPad app (real Apple purchase), on the public website (extras are app-only), or as a preview (one tap opens all)
+var STORE = window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() ? (window.Capacitor.registerPlugin ? window.Capacitor.registerPlugin('PatitaStore') : window.Capacitor.Plugins.PatitaStore) : null;
+var MODE = STORE ? 'app' : /github\.io$/.test(location.hostname) ? 'site' : 'preview', price = '', gateMsg = document.getElementById('gate-msg'), adultFor = null;
+if (MODE !== 'preview') btnRelock.hidden = true;
+function say(t) { gateMsg.textContent = t; gateMsg.hidden = !t; }
+function gateButtons(show) { gateHold.hidden = !show || MODE === 'site'; document.getElementById('gate-restore').hidden = !show || MODE !== 'app'; }
+if (STORE) {
+  STORE.owned().then(function (r) { if (r && r.owned) unlockAll(true); }).catch(function () {});
+  STORE.product().then(function (r) { if (r && r.found) price = r.price; }).catch(function () {});
+}
+var gateOpenBase = openGate;
+openGate = function (kind, target) {
+  gateOpenBase(kind, target); say(''); document.getElementById('gate-adult').hidden = true; gateButtons(true);
+  var sm = document.getElementById('gate-small'), close = document.getElementById('gate-close');
+  if (MODE === 'app') { sm.textContent = 'One payment opens every extra in both Patita games, for good.'; gateHold.textContent = price ? 'Unlock everything \u00B7 ' + price : 'Unlock everything'; close.textContent = 'Not now'; }
+  else if (MODE === 'site') { sm.textContent = 'These extras come with the Patita app for iPad.'; close.textContent = 'OK'; }
+};
+// grown-up check before any purchase: a times-table question small children can't answer
+function askAdult(then) {
+  adultFor = then; gateButtons(false); say('');
+  var a = 3 + Math.floor(Math.random() * 7), b = 3 + Math.floor(Math.random() * 7), ans = a * b, opts = [ans];
+  while (opts.length < 4) { var o = ans + (Math.floor(Math.random() * 9) - 4) * (1 + Math.floor(Math.random() * 3)); if (o > 0 && opts.indexOf(o) < 0) opts.push(o); }
+  opts.sort(function () { return Math.random() - .5; });
+  document.getElementById('ga-q').textContent = a + ' \u00D7 ' + b; var box = document.getElementById('ga-btns'); box.textContent = '';
+  opts.forEach(function (v) { var bt = document.createElement('button'); bt.textContent = v; bt.addEventListener('click', function () {
+    document.getElementById('gate-adult').hidden = true;
+    if (v === ans) adultFor(); else { gateButtons(true); say('Ask a grown-up to help with this one!'); }
+  }); box.appendChild(bt); });
+  document.getElementById('gate-adult').hidden = false;
+}
+function storeResult(r, restoring) {
+  if (r && r.owned) { unlockAll(false); return; }
+  gateButtons(true);
+  var e = r && r.error;
+  say(restoring ? 'No Patita purchase was found for this Apple account.' : e === 'cancelled' ? 'No problem, nothing was bought.' : e === 'pending' ? 'Waiting for a grown-up to approve the purchase.' : 'The payment didn\u2019t go through. Please try again.');
+}
 gateHold.addEventListener('click', function () {
-  holdT = setTimeout(function () {
-    holdEnd(); gate.hidden = true; SFX.cheer();
-    spaceOpen = stagesOpen = true; btnRelock.hidden = false; document.getElementById('btn-portal').classList.add('open'); 
-    if (gateKind === 'space') { setWorld('space'); if (dressing) buildDress(); }
-    else { if (use3D && R3.env) { R3.scene.remove(R3.env); R3.env = null; } setApp(gateTarget || A.id); sparkleBurst(); }
-    if (dressing && use3D) buildRail();
-    if (use3D && !intro) buildGirl();
-  }, 0);
+  if (MODE === 'preview') { unlockAll(false); return; }
+  if (MODE !== 'app') return;
+  askAdult(function () { say('Opening the App Store\u2026'); STORE.buy().then(function (r) { storeResult(r, false); }).catch(function () { storeResult(null, false); }); });
+});
+document.getElementById('gate-restore').addEventListener('click', function () {
+  askAdult(function () { say('Checking your purchases\u2026'); STORE.restore().then(function (r) { storeResult(r, true); }).catch(function () { storeResult(null, true); }); });
 });
 document.getElementById('gate-close').addEventListener('click', function () { holdEnd(); gate.hidden = true; });
 var btnSound = document.getElementById('btn-sound');
