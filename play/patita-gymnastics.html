@@ -1242,8 +1242,6 @@ function musicTick() {
 // two voices an octave apart: heavier, more donkey than squeak
 function voice2(f0, f1, d, delay, band, v, vib, amt) { voice(f0, f1, d, delay, band, v, vib, amt); voice(f0 / 2, f1 / 2, d, delay, band * .6, v * .85, vib, amt); }
 var lastSay = {};
-// the girls make no voice noises any more: the only voice left is the "ouch" when they fall
-['burp', 'donkey', 'duck', 'giggle', 'goat', 'oof', 'raspberry', 'yawn', 'honk', 'hup', 'scream'].forEach(function (k) { if (SFX[k]) SFX[k] = function () {}; });
 function sayOne(key, list) { return; var n; do { n = Math.floor(Math.random() * list.length); } while (list.length > 1 && n === lastSay[key]); lastSay[key] = n; list[n](look.pitch || 1); }
 var GRUNTS = [
   function (q) { voice2(170 * q, 115 * q, .16, 0, 600, .2); },
@@ -1320,6 +1318,8 @@ var SFX = {
   },
   chew: function () { noise(.07, .14, 520, 260, 'lowpass'); }
 };
+// the girls make no voice noises any more: the only voice left is the "ouch" when they fall
+['burp', 'donkey', 'duck', 'giggle', 'goat', 'oof', 'raspberry', 'yawn', 'honk', 'hup', 'scream'].forEach(function (k) { if (SFX[k]) SFX[k] = function () {}; });
 
 /* ---------- 3D stage ---------- */
 var T3 = window.THREE, R3 = null, use3D = false;
