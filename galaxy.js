@@ -205,6 +205,12 @@
     star: function (n) { var p = new Float32Array(n * 3); for (var i = 0; i < n; i++) {
       var a = R() * 6.283, seg = (a / 6.283 * 10) % 2, f = seg < 1 ? seg : 2 - seg, edge = 2.4 + 3.6 * (1 - f), r = Math.pow(R(), .45) * edge;
       p.set([Math.cos(a - Math.PI / 2) * r, -Math.sin(a - Math.PI / 2) * r, gauss() * .7 * (1 - r / 6)], i * 3); } return p; },
+    /* research: a bundle of nerve fibres, gently twisting */
+    nerve: function (n) { var p = new Float32Array(n * 3), F = 46, fib = [];
+      for (var f = 0; f < F; f++) { var r = Math.sqrt(R()) * 2.6, a = R() * 6.283; fib.push([r, a]); }
+      for (var i = 0; i < n; i++) {
+        var fb = fib[i % F], x = R() * 18 - 9, tw = fb[1] + x * .12, bend = Math.sin(x * .2) * 1.4;
+        p.set([x, Math.cos(tw) * fb[0] + bend + gauss() * .08, Math.sin(tw) * fb[0] + gauss() * .08], i * 3); } return p; },
     ring: function (n) { var p = new Float32Array(n * 3); for (var i = 0; i < n; i++) {
       var a = R() * 6.283, r = 6.2 + gauss() * .45, tube = gauss() * .45; p.set([Math.cos(a) * (r + tube), Math.sin(a) * (r + tube), gauss() * .45], i * 3); } return p; }
   };
@@ -219,7 +225,8 @@
     { shape: 'flower', color: '#9a7bff', alt: '#ff6be6', at: [-36, 0, -400] },
     { shape: 'check',  color: '#ff3d86', alt: '#ff9a3d', at: [32, -10, -500] },
     { shape: 'star',   color: '#c447ff', alt: '#ff63c8', at: [-30, 8, -600] },
-    { shape: 'ring',   color: '#b6ff2e', alt: '#2effc4', at: [0, 0, -700] }
+    { shape: 'nerve',  color: '#ff4f6d', alt: '#ffc46b', at: [30, -6, -700] },
+    { shape: 'ring',   color: '#b6ff2e', alt: '#2effc4', at: [0, 0, -800] }
   ];
 
   /* the home galaxy: gold core, hot pink and violet arms, blue rim */
@@ -483,7 +490,7 @@
         plane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(tmp).negate(), b.position);
         if (ray.ray.intersectPlane(plane, hit)) {
           shared.uMouse.value.copy(hit);
-          if (hit.distanceTo(b.position) < 8.5 && !overUI(mouse.px, mouse.py)) hoverIdx = sp.near;
+          if (hit.distanceTo(b.position) < 8.5 && !overUI(mouse.px, mouse.py) && stops[sp.near].dataset.href) hoverIdx = sp.near;
         }
       } else if (sp.near === 0) {
         plane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 1, 0).applyQuaternion(home.quaternion), home.position);
