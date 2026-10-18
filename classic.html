@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ioanna Gkerdouki — Machine Learning & Product</title>
+<meta name="description" content="Ioanna Gkerdouki — math and computer science at UC San Diego. I build machine learning systems end to end: computer vision, environmental modeling, neural signal decoding, and the interfaces that make them usable.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="index.html" title="Back to the galaxy">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="classic.html" aria-current="page">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="hero-copy">
+    <p class="hello">Hello, I'm Ioanna.</p>
+    <h1 class="display">I build systems that <em>notice</em> what people miss.</h1>
+    <p class="lead">
+      I study math and computer science at UC San Diego, and I build machine-learning
+      systems end to end: the model, the architecture around it, and the interface people
+      have to trust. So far they can spot a fall on camera, predict where pesticide drift
+      will travel, and warn a driver about the deer ahead.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#work">See my work <span aria-hidden="true">↓</span></a>
+      <a class="btn" href="assets/Ioanna_Gkerdouki_Resume.pdf">Résumé <span aria-hidden="true">↓</span></a>
+      <a class="btn" href="https://github.com/Igkerdouki">GitHub <span aria-hidden="true">↗</span></a>
+      <a class="btn" href="mailto:i.gkerdouki@gmail.com">Say hi</a>
+    </div>
+    <p class="hero-open"><span class="hero-open-dot" aria-hidden="true"></span>Graduating March 2027 · Open to software engineering roles: machine learning, front end and full stack</p>
+  </div>
+
+  <aside class="hero-side" aria-label="Questions I'm chasing">
+    <div class="wonder">
+      <div class="wonder-label">
+        Questions I'm chasing
+        <span class="wonder-count" aria-hidden="true"></span>
+      </div>
+
+      <div class="wonder-items">
+        <article class="wonder-item is-on" style="--tint:#2f8b93;">
+          <h2 class="wonder-q">Can a camera notice a fall before a person does?</h2>
+          <p class="wonder-a">
+            Perceptra watches a live feed for falls, choking and unresponsiveness, then calls
+            for help. I set the product direction and wrote the pose-detection pipeline.
+          </p>
+          <a class="wonder-link" href="work/perceptra.html">Read the case study →</a>
+        </article>
+
+        <article class="wonder-item" style="--tint:#c2556f;">
+          <h2 class="wonder-q">Did the AI actually build what the ticket asked for?</h2>
+          <p class="wonder-a">
+            SpecCheck doesn't read the diff and guess. It runs every requirement against the
+            live app, fast-forwards the clock when it has to, and posts the evidence.
+          </p>
+          <a class="wonder-link" href="work/speccheck.html">Read the case study →</a>
+        </article>
+
+        <article class="wonder-item" style="--tint:#d1803a;">
+          <h2 class="wonder-q">Can a roadside camera tell a deer from a bear?</h2>
+          <p class="wonder-a">
+            WildSafe can, and the accuracy was fantastic: 94 to 99% per species, built on
+            CLIP, OpenAI's pre-trained vision model. It warns the driver, then plays a
+            deterrent sound tuned to that animal.
+          </p>
+          <a class="wonder-link" href="work/wildsafe.html">Read the case study →</a>
+        </article>
+
+        <article class="wonder-item" style="--tint:#3f8f5f;">
+          <h2 class="wonder-q">Where does the spray go once it leaves the field?</h2>
+          <p class="wonder-a">
+            GeoSync models pesticide drift from weather and California's public use reports,
+            then turns it into a risk map someone living next to the field can read.
+          </p>
+          <a class="wonder-link" href="work/geosync.html">Read the case study →</a>
+        </article>
+
+        <article class="wonder-item" style="--tint:#6a5acd;">
+          <h2 class="wonder-q">Is there a 3×3 magic square made only of square numbers?</h2>
+          <p class="wonder-a">
+            Nobody knows — the problem has been open since 1984. I'm chasing it on my own
+            time with computer-assisted search, and keeping honest notes on what fails.
+          </p>
+          <a class="wonder-link" href="https://github.com/Igkerdouki/magic-square-congrua">See the research on GitHub ↗</a>
+        </article>
+
+        <article class="wonder-item" style="--tint:#2f8b93;">
+          <h2 class="wonder-q">What colour did the eye just see?</h2>
+          <p class="wonder-a">
+            In the IEBL lab at UC San Diego I build pipelines that decode neural signals —
+            right now, classifying colour from optic nerve recordings.
+          </p>
+        </article>
+      </div>
+
+      <div class="wonder-nav">
+        <div class="wonder-dots"></div>
+        <button class="wonder-next" type="button">Next question <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </aside>
+</header>
+
+<section class="stage" id="work">
+  <div class="stage-inner">
+    <header class="stage-head">
+      <span class="eyebrow">Selected work</span>
+      <h2>Six things I built. Each one <em>notices</em> something.</h2>
+    </header>
+
+    <a class="scene" href="work/perceptra.html" style="--tint:#5cc8d1; --ground:#070c1c;">
+      <div class="scene-text">
+        <span class="scene-no">01 / 06 </span>
+        <h3 class="scene-name">Perceptra</h3>
+        <p class="scene-line">Cameras that recognize <b>a fall, a choking, a body that stopped moving</b> — and call for help.</p>
+        <p class="scene-meta">Product Owner &amp; ML Lead · SDSC RDS 2026<br>MediaPipe · FastAPI · Supabase</p>
+        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
+      </div>
+      <div class="scene-media">
+        <div class="vf">
+          <video src="assets/perceptra-fall-demo.mp4" poster="assets/perceptra-fall-demo.jpg" width="1600" height="862" muted loop playsinline preload="none" aria-label="Screen recording of Perceptra's live console: a picture of a falling person is held up to the camera, a red box appears around it, and the Alert Monitor raises 'Fall detected'."></video>
+          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
+          <span class="vf-tag"><b>Noticed</b>a fall, one second after it happened</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="scene" href="work/geosync.html" style="--tint:#9fdc7a; --ground:#08150d;">
+      <div class="scene-text">
+        <span class="scene-no">02 / 06 <span class="scene-status">Working prototype</span></span>
+        <h3 class="scene-name">GeoSync</h3>
+        <p class="scene-line">Predicting where pesticide drift travels <b>before it reaches a school.</b></p>
+        <p class="scene-meta">ML &amp; Platform · SDSC RDS 2026<br>Gaussian plume · FastAPI · PostGIS</p>
+        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
+      </div>
+      <div class="scene-media">
+        <div class="vf">
+          <video src="assets/geosync-demo.mp4" poster="assets/geosync-demo.jpg" width="1600" height="804" muted loop playsinline preload="none" aria-label="Screen recording of the GeoSync dashboard: California's counties shaded by pesticide use, with live spray events and an assistant answering a question about a chemical."></video>
+          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
+          <span class="vf-tag"><b>Noticed</b>46.0M lbs applied in Fresno County in 2023</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="scene" href="work/wildsafe.html" style="--tint:#f2a865; --ground:#160e17;">
+      <div class="scene-text">
+        <span class="scene-no">03 / 06 <span class="scene-status">Deployed</span></span>
+        <h3 class="scene-name">WildSafe</h3>
+        <p class="scene-line">It spots the deer <b>before the driver does</b> — and warns them in time.</p>
+        <p class="scene-meta">Machine Learning · 2026<br>CLIP · Pose estimation · Docker</p>
+        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
+      </div>
+      <div class="scene-media">
+        <div class="vf">
+          <video src="assets/wildsafe-wide.mp4" poster="assets/wildsafe-wide.jpg" width="1600" height="862" muted loop playsinline preload="none" aria-label="Two recordings side by side: the WildSafe phone alert reading 'Wildlife alert — deer detected, 0.3 miles ahead on Route 7', and the interactive deterrent demo playing a species-specific sound."></video>
+          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
+          <span class="vf-tag"><b>Noticed</b>a deer, 0.3 miles ahead</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="scene" href="work/bloom.html" style="--tint:#b3a6ff; --ground:#0c0d1f;">
+      <div class="scene-text">
+        <span class="scene-no">04 / 06 <span class="scene-status">Working prototype</span></span>
+        <h3 class="scene-name">Bloom</h3>
+        <p class="scene-line">Investing that <b>teaches you as you go,</b> so you stop feeling lost.</p>
+        <p class="scene-meta">ML &amp; Full Stack · 2026 — ongoing<br>FastAPI · React · Interactive Brokers</p>
+        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
+      </div>
+      <div class="scene-media">
+        <div class="vf">
+          <video src="assets/bloom-lily-demo.mp4" poster="assets/bloom-lily-demo.jpg" width="1600" height="862" muted loop playsinline preload="none" aria-label="Screen recording of Bloom: a question is typed to the assistant, and three bonds light up green in the bond finder."></video>
+          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
+          <span class="vf-tag"><b>Noticed</b>three Treasuries worth a second look</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="scene" href="work/speccheck.html" style="--tint:#f490a6; --ground:#170a10;">
+      <div class="scene-text">
+        <span class="scene-no">05 / 06 <span class="scene-status">Open source</span></span>
+        <h3 class="scene-name">SpecCheck</h3>
+        <p class="scene-line">Did the AI build <b>what the ticket asked for?</b> Don't read the code. Run it.</p>
+        <p class="scene-meta">Design &amp; Build · 2026<br>Python · GitHub Actions</p>
+        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
+      </div>
+      <div class="scene-media">
+        <div class="vf">
+          <pre class="vf-trace" aria-label="SpecCheck output: three wrong passwords return 401 as expected, then the correct password returns 200 where 423 was expected."><span>$ speccheck run specs/login-lockout.json</span>
+<span>login · wrong    → 401 <b class="ok">✓</b></span>
+<span>login · wrong    → 401 <b class="ok">✓</b></span>
+<span>login · wrong    → 401 <b class="ok">✓</b></span>
+<span>login · correct  → 200 <b class="bad">✗ expected 423</b></span>
+<span class="verdict">Verdict: <b class="bad">Not met</b> — the account never locks</span></pre>
+          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
+          <span class="vf-tag"><b>Noticed</b>login returned 200 where the spec said 423</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="scene" href="work/patita.html" style="--tint:#c9a2ff; --ground:#120b22;">
+      <div class="scene-text">
+        <span class="scene-no">06 / 06 <span class="scene-status">Coming to the App Store</span></span>
+        <h3 class="scene-name">Patita</h3>
+        <p class="scene-line">Two silly 3D toy-games where three girls <b>tumble, skate, sparkle and fall over with a honk.</b></p>
+        <p class="scene-meta">Design &amp; Build · 2026<br>three.js · Capacitor · iOS</p>
+        <span class="scene-cta">See the games <i aria-hidden="true">→</i></span>
+      </div>
+      <div class="scene-media">
+        <div class="vf">
+          <video src="assets/patita-reel.mp4" poster="assets/patita-reel.jpg" width="1600" height="900" muted loop playsinline preload="none" aria-label="Screenshots from the Patita games fading one into the next: the three girls lined up on the gymnastics floor, a girl skating on the ice, a rail of sparkly leotards, and the space rink."></video>
+          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
+          <span class="vf-tag"><b>Noticed</b>a perfect landing, then a honk</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<section class="wrap" id="code">
+  <span class="eyebrow">Also on GitHub</span>
+  <div class="narrow">
+    <h2>Smaller things I built to understand how they work.</h2>
+  </div>
+
+  <div class="repos">
+    <a class="repo" href="https://github.com/Igkerdouki/c-web-server">
+      <span class="repo-name">c-web-server <span aria-hidden="true">↗</span></span>
+      <span class="repo-desc">An HTTP chat server written from scratch over raw POSIX sockets, with routing and query parsing.</span>
+      <span class="repo-lang">C</span>
+    </a>
+    <a class="repo" href="https://github.com/Igkerdouki/c-shell">
+      <span class="repo-name">c-shell <span aria-hidden="true">↗</span></span>
+      <span class="repo-desc">A Unix-style command-line shell with process control and command history.</span>
+      <span class="repo-lang">C</span>
+    </a>
+    <a class="repo" href="https://github.com/Igkerdouki/memory-allocator">
+      <span class="repo-name">memory-allocator <span aria-hidden="true">↗</span></span>
+      <span class="repo-desc">A dynamic memory allocator — my own malloc and free.</span>
+      <span class="repo-lang">C</span>
+    </a>
+    <a class="repo" href="https://github.com/Igkerdouki/magic-square-congrua">
+      <span class="repo-name">magic-square-congrua <span aria-hidden="true">↗</span></span>
+      <span class="repo-desc">Independent, computer-assisted research on the 3×3 magic square of squares.</span>
+      <span class="repo-lang">Python</span>
+    </a>
+    <a class="repo" href="https://github.com/Igkerdouki/prompt-to-product">
+      <span class="repo-name">prompt-to-product <span aria-hidden="true">↗</span></span>
+      <span class="repo-desc">Turns a text prompt into a 3D model ready for manufacturing.</span>
+      <span class="repo-lang">Rust · Three.js</span>
+    </a>
+    <a class="repo" href="https://github.com/Igkerdouki/pi-camera">
+      <span class="repo-name">pi-camera <span aria-hidden="true">↗</span></span>
+      <span class="repo-desc">A Raspberry Pi wildlife-detection camera with a command-line tool and a browser live view.</span>
+      <span class="repo-lang">Python</span>
+    </a>
+  </div>
+</section>
+
+<section class="wrap" id="about">
+  <span class="eyebrow">About</span>
+  <div class="narrow">
+    <h2>Most detection systems fail at the same place — the handoff.</h2>
+    <p>
+      A model can be accurate and still useless. If the alert reaches the wrong person,
+      arrives too late, or gives no reason for its confidence, nobody acts on it. That
+      gap between a correct prediction and a useful one is the part of the work I care
+      about most.
+    </p>
+    <p>
+      So I tend to build the whole path. On Perceptra I set the product direction, drew
+      the architecture from camera to alert, decided what we would detect first, and then
+      wrote the pose-detection pipeline myself. On GeoSync the modeling only mattered
+      because it ended as a map a parent could read. On WildSafe the hard problem was not
+      classification but keeping inference alive inside a memory-constrained container.
+    </p>
+    <p>
+      My background runs across computer vision, signal processing, and neural data
+      analysis. The through-line is the same in all of it: finding the signal, then making
+      it mean something to someone.
+    </p>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap foot-inner">
+    <div>
+      <h2 style="margin-bottom:14px;">Let's talk.</h2>
+      <div class="foot-links">
+        <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+        <a href="https://github.com/Igkerdouki">GitHub</a>
+        <a href="https://www.linkedin.com/in/ioanna-gkerdouki-821b10153/">LinkedIn</a>
+        <a href="assets/Ioanna_Gkerdouki_Resume.pdf">Résumé (PDF)</a>
+      </div>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+</body>
+</html>

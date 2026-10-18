@@ -1,0 +1,142 @@
+/* Space theme for the case studies: the galaxy homepage's night sky, carried
+   onto every project page. Loaded after styles.css; each page sets --accent
+   (and --accent-2) on <body> to its project's colours. */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+body.space {
+  --bg:        #04050d;
+  --bg-soft:   rgba(255, 255, 255, .045);
+  --card:      rgba(255, 255, 255, .05);
+  --line:      rgba(255, 255, 255, .12);
+  --line-soft: rgba(255, 255, 255, .08);
+  --text:      #f3f1fb;
+  --text-mid:  rgba(236, 233, 250, .84);
+  --text-dim:  rgba(236, 233, 250, .58);
+
+  /* every accent in styles.css becomes this project's colour */
+  --green:  var(--accent);
+  --teal:   var(--accent);
+  --violet: var(--accent);
+  --amber:  var(--accent-2, var(--accent));
+
+  --round: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+  --sans:  'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+  --mono:  'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 400;
+}
+
+/* the sky: stars drawn by space.js, plus soft nebula light in the project's colours */
+.space-sky { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+body.space::before {
+  content: ""; position: fixed; inset: 0; z-index: -3; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 85% 10%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 5% 75%, color-mix(in srgb, var(--accent-2, var(--accent)) 12%, transparent), transparent 70%),
+    radial-gradient(70% 60% at 50% 110%, rgba(90, 40, 200, .14), transparent 70%),
+    #04050d;
+}
+
+/* ---------- type ---------- */
+body.space h1, body.space h2, body.space h3, body.space .display, body.space .nav-name, body.space .next-t {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  letter-spacing: -.035em;
+}
+body.space .display { font-weight: 500; text-transform: uppercase; font-size: clamp(2.2rem, 4.6vw, 3.8rem); line-height: 1.04; }
+body.space h2 { font-weight: 500; }
+body.space h3 { font-weight: 600; letter-spacing: -.01em; }
+body.space .display em, body.space h2 em {
+  background: linear-gradient(100deg, var(--accent), var(--accent-2, var(--accent)));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body.space .eyebrow { font-family: 'IBM Plex Mono', monospace; font-weight: 500; letter-spacing: .14em; color: var(--accent); }
+body.space p, body.space li { color: var(--text-mid); }
+body.space p.lead, body.space strong { color: var(--text); }
+body.space a { color: inherit; }
+body.space code { background: rgba(255,255,255,.08); color: var(--text); }
+
+/* ---------- top bar ---------- */
+body.space .nav { background: rgba(4, 5, 13, .72); border-bottom-color: var(--line-soft); }
+body.space .nav-name { text-transform: uppercase; font-weight: 500; font-size: .98rem; letter-spacing: .04em; }
+body.space .nav-links { font-family: 'IBM Plex Mono', monospace; font-weight: 400; text-transform: uppercase; font-size: .78rem; letter-spacing: .1em; }
+body.space .nav-links a { color: var(--text-dim); }
+body.space .nav-links a:hover { color: var(--accent); }
+
+/* ---------- glass instead of white ---------- */
+body.space .card,
+body.space .metric,
+body.space .note,
+body.space .next,
+body.space .trace,
+body.space .step::before,
+body.space .figure-frame,
+body.space .repo,
+body.space .btn {
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+body.space .card { background: var(--card); border: 1px solid var(--line); box-shadow: none; }
+body.space .card:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+body.space .metric { background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 14%, transparent), rgba(255,255,255,.03)); border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); }
+body.space .metric-n { color: var(--accent); font-family: 'IBM Plex Mono', monospace; font-weight: 500; text-shadow: 0 0 30px color-mix(in srgb, var(--accent) 45%, transparent); }
+body.space .note { background: color-mix(in srgb, var(--accent-2, var(--accent)) 10%, rgba(255,255,255,.03)); border: 1px solid color-mix(in srgb, var(--accent-2, var(--accent)) 28%, transparent); }
+body.space .note strong { color: var(--accent-2, var(--accent)); }
+body.space .pull { color: var(--accent); text-shadow: 0 0 40px color-mix(in srgb, var(--accent) 30%, transparent); }
+body.space .step { border-left-color: var(--line); }
+body.space .step::before { background: var(--accent); color: #05060f; box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 60%, transparent); }
+body.space .stack-row, body.space .stack-row:first-child { border-color: var(--line-soft); }
+body.space .stack-k { color: var(--text); }
+body.space .case-summary { border-color: var(--line); }
+body.space .case-summary dt { font-family: 'IBM Plex Mono', monospace; color: var(--text-dim); }
+body.space .case-summary dd a, body.space .foot-links a { color: var(--accent); border-bottom-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+body.space .trace { background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+body.space .trace .ok { color: #6ee7a8; }
+body.space .trace .bad { color: #ff8a9a; }
+body.space section + section { border-top-color: var(--line-soft); }
+
+/* screenshots and videos sit in glowing frames; diagrams keep a light card so they stay readable */
+body.space .figure-frame { background: rgba(255,255,255,.03); border: 1px solid var(--line); box-shadow: 0 30px 60px -40px color-mix(in srgb, var(--accent) 60%, transparent); }
+body.space .figure-arch .figure-frame { background: #f5f3ee; }
+body.space figcaption { color: var(--text-dim); }
+body.space .screen-bar { background: rgba(255,255,255,.06); }
+body.space .phone-clip .figure-frame { box-shadow: 0 0 0 1px var(--line), 0 40px 80px -40px color-mix(in srgb, var(--accent) 70%, transparent); }
+
+/* badges */
+body.space .badge-live { color: #05060f; background: var(--accent); }
+body.space .badge-wip { color: var(--accent-2, var(--accent)); background: color-mix(in srgb, var(--accent-2, var(--accent)) 16%, transparent); }
+
+/* next project + footer */
+body.space .next { background: rgba(255,255,255,.04); border: 1px solid var(--line); transition: background .3s, border-color .3s, box-shadow .3s; }
+body.space .next:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); box-shadow: 0 0 50px -20px var(--accent); }
+body.space .next-l { color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; }
+body.space .next-t { text-transform: uppercase; font-weight: 500; }
+body.space footer { border-top-color: var(--line-soft); }
+body.space .foot-note { color: var(--text-dim); }
+
+/* ---------- page heroes that were drawn for a light page ---------- */
+/* Perceptra already has a dark hero: fade it into the night instead of into cream */
+body.space .perc-hero::after { background: linear-gradient(to bottom, rgba(4,5,13,0), var(--bg)); }
+/* GeoSync's map, turned to a night map with the colours kept */
+body.space .geo-hero { background: transparent; }
+body.space .geo-map { filter: invert(.9) hue-rotate(180deg) saturate(1.4) brightness(.95); }
+body.space .geo-hero::before { background: linear-gradient(90deg, var(--bg) 0%, rgba(4,5,13,.88) 30%, rgba(4,5,13,0) 62%); }
+body.space .geo-hero::after { background: linear-gradient(to bottom, rgba(4,5,13,0), var(--bg)); }
+body.space .geo-status { background: rgba(4,5,13,.7); border-color: var(--line); color: var(--accent); }
+body.space .geo-note { color: var(--text-dim); }
+/* Bloom's "try it" card already lives on a dark panel: give it the project glow */
+body.space .demo { box-shadow: 0 0 0 1px var(--line), 0 40px 90px -40px color-mix(in srgb, var(--accent) 65%, transparent); }
+/* Patita keeps its own toy-box colours inside, but loses the cream around it */
+body.space .pat { background: transparent; }
+body.space .pat-hero { background: radial-gradient(60% 70% at 80% 30%, rgba(201,162,255,.22), transparent 70%), radial-gradient(50% 60% at 10% 90%, rgba(255,127,182,.18), transparent 70%); }
+
+/* gentle reveal as each block arrives */
+@media (prefers-reduced-motion: no-preference) {
+  body.space .will-reveal { filter: blur(6px); transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease); }
+  body.space .will-reveal.is-in { filter: none; }
+}
+
+/* Patita keeps its bouncy toy-box lettering */
+body.space .pat h1, body.space .pat h2, body.space .pat h3 { font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; letter-spacing: -.01em; text-transform: none; }
+body.space .pat-words { font-weight: 700; }

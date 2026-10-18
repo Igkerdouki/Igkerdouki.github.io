@@ -3,310 +3,296 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ioanna Gkerdouki — Machine Learning & Product</title>
-<meta name="description" content="Ioanna Gkerdouki — math and computer science at UC San Diego. I build machine learning systems end to end: computer vision, environmental modeling, neural signal decoding, and the interfaces that make them usable.">
-<link rel="stylesheet" href="styles.css">
+<title>Ioanna Gkerdouki</title>
+<meta name="description" content="Ioanna Gkerdouki, math and computer science at UC San Diego. Fly through the projects she couldn't stop thinking about: computer vision, pesticide drift, wildlife safety, investing, developer tools and games.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap">
+<style>
+  :root {
+    --space: #02030a;
+    --text: #f6f3ff;
+    --dim: rgba(236, 232, 255, .62);
+    --display: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    --body: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--space); color: var(--text); font: 17px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+
+  #sky { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  .vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(130% 100% at 65% 50%, transparent 45%, rgba(2,3,10,.75) 100%),
+                linear-gradient(90deg, rgba(2,3,10,.6) 0%, rgba(2,3,10,.15) 40%, transparent 58%); }
+
+  /* ---------- top bar ---------- */
+  .bar { position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 22px clamp(18px, 4vw, 48px);
+    background: linear-gradient(180deg, rgba(2,3,10,.85), rgba(2,3,10,0)); }
+  .bar-name { font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: .04em; font-size: 1.15rem; letter-spacing: -.01em; color: var(--text); text-decoration: none; }
+  .bar-links { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .pill { font: 500 .72rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text); text-decoration: none; padding: 11px 16px; border-radius: 100px; border: 0; cursor: pointer;
+    background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); backdrop-filter: blur(8px);
+    transition: background .25s, box-shadow .25s, color .25s; }
+  .pill:hover { background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
+  .sound[aria-pressed="true"] { background: rgba(198,255,90,.16); box-shadow: inset 0 0 0 1px rgba(198,255,90,.7); color: #e2ff9e; }
+
+  /* ---------- the travel map (right edge) ---------- */
+  .map { position: fixed; right: clamp(14px, 2.4vw, 34px); top: 50%; transform: translateY(-50%); z-index: 10;
+    display: flex; flex-direction: column; gap: 13px; }
+  .map a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; text-decoration: none;
+    font: 400 .66rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; color: transparent; transition: color .3s; }
+  .map a i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.28); transition: transform .3s, background .3s, box-shadow .3s; flex: none; }
+  .map:hover a { color: var(--dim); }
+  .map a.on { color: var(--text); }
+  .map a.on i { background: var(--c); transform: scale(1.6); box-shadow: 0 0 16px var(--c), 0 0 4px var(--c); }
+
+  /* ---------- scroll stops ---------- */
+  main { position: relative; z-index: 5; }
+  .stop { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 110px clamp(18px, 6vw, 90px) 110px clamp(18px, 12vw, 200px); }
+  .card { max-width: 440px; }
+  .stop:not(.outro) .card > h2 { display: block; width: max-content; }
+  .card > * { opacity: 0; transform: translateY(26px); transition: opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1); }
+  .stop.in .card > * { opacity: 1; transform: none; }
+  .stop.in .card > *:nth-child(2) { transition-delay: .08s; }
+  .stop.in .card > *:nth-child(3) { transition-delay: .16s; }
+  .stop.in .card > *:nth-child(4) { transition-delay: .24s; }
+  .stop.in .card > *:nth-child(5) { transition-delay: .32s; }
+  .stop.in .card > *:nth-child(6) { transition-delay: .4s; }
+
+  .kicker { display: inline-flex; align-items: center; gap: 12px; font: 400 .72rem/1 var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+  .kicker b { color: var(--c, #fff); font-weight: 600; font-size: .9rem; letter-spacing: .04em; }
+  .kicker::after { content: ""; width: 46px; height: 1px; background: linear-gradient(90deg, var(--c, #fff), transparent); }
+
+  .stop h1, .stop h2 { font-family: var(--display); font-weight: 500; letter-spacing: -.04em; line-height: 1; margin: 18px 0 20px; text-transform: uppercase; }
+  .stop h2 { display: inline-block; padding-right: .08em; font-size: clamp(2.2rem, 4vw, 3.6rem);
+    background: linear-gradient(100deg, #fff 30%, var(--c) 95%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stop h1 { font-size: clamp(1.8rem, 2.9vw, 2.75rem); line-height: 1.08; }
+  .stop h1 b { font-weight: 500; background: linear-gradient(100deg, #ffd27a, #ff5fa8 45%, #7a7bff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .line { font-weight: 300; font-size: 1.04rem; line-height: 1.65; color: rgba(246,243,255,.9); margin: 0 0 14px; max-width: 30rem; }
+  .meta { font: 500 .78rem/1.9 var(--body); letter-spacing: .02em; color: var(--dim); margin: 0 0 26px; }
+  .meta span { color: var(--c); }
+
+  /* the demo, seen through a porthole */
+  .port { position: absolute; right: 37vw; top: 56%; width: clamp(190px, 17vw, 270px); aspect-ratio: 1; margin-top: calc(clamp(190px, 17vw, 270px) / -2);
+    border-radius: 50%; display: block; opacity: 0; transform: scale(.8); transition: opacity 1.1s .25s, transform 1.1s .25s cubic-bezier(.22,.61,.36,1); }
+  .stop.in .port { opacity: 1; transform: none; }
+  .port-glass { position: absolute; inset: 0; border-radius: 50%; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 0 0 10px rgba(255,255,255,.03), 0 0 70px -6px var(--c), inset 0 0 40px rgba(0,0,0,.6);
+    animation: float 7s ease-in-out infinite; }
+  .port video, .port img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); transition: transform .8s; filter: saturate(1.15) contrast(1.05); }
+  .port:hover video, .port:hover img { transform: scale(1.16); }
+  .port-glass::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(60% 50% at 30% 20%, rgba(255,255,255,.22), transparent 60%), radial-gradient(circle, transparent 58%, rgba(2,3,10,.55) 100%); pointer-events: none; }
+  .port-ring { position: absolute; inset: -18px; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--c) 55%, transparent); animation: spin 40s linear infinite; pointer-events: none; }
+  .port-tag { position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%); white-space: nowrap;
+    font: 500 .66rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: #05060f;
+    background: var(--c); padding: 9px 14px; border-radius: 100px; box-shadow: 0 10px 30px -8px var(--c); }
+  @keyframes float { 50% { transform: translateY(-12px); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .go { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text);
+    font: 500 .86rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; padding: 6px 0; }
+  .go i { font-style: normal; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--c, #fff); color: #05060f; font-size: 1.1rem; transition: transform .3s, box-shadow .3s; }
+  .go[href^="mailto"] { text-transform: none; letter-spacing: .01em; font-size: 1.05rem; }
+  .go:hover i { transform: translateX(6px) rotate(-12deg); box-shadow: 0 0 30px var(--c); }
+  .go[href^="mailto"] { text-transform: none; letter-spacing: .01em; font-size: 1.05rem; }
+
+  /* intro */
+  .intro .card { max-width: 620px; }
+  .intro .line { font-size: 1.08rem; color: var(--dim); max-width: 31rem; }
+  .hint { margin-top: 36px; font: 400 .72rem/1 var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); display: flex; align-items: center; gap: 14px; }
+  .hint i { width: 24px; height: 38px; border-radius: 13px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.55); position: relative; }
+  .hint i::after { content: ""; position: absolute; left: 50%; top: 8px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: #fff; animation: wheel 1.8s infinite; }
+  /* the opening line arrives one word at a time */
+  .intro h1 .ln { display: block; white-space: nowrap; }
+  .intro h1 .w { display: inline-block; opacity: 0; transform: translateY(.5em) scale(.9); filter: blur(10px);
+    animation: word .9s cubic-bezier(.22,.61,.36,1) forwards; animation-delay: calc(.9s + var(--i) * .16s); }
+  .intro h1 .w.g { background: linear-gradient(100deg, #ffd27a, #ff5fa8 45%, #7a7bff); background-size: 400% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .intro h1 .w.g:nth-of-type(3) { background-position: 0 0; } .intro h1 .w.g:nth-of-type(4) { background-position: 33% 0; }
+  .intro h1 .w.g:nth-of-type(5) { background-position: 66% 0; } .intro h1 .w.g:nth-of-type(6) { background-position: 100% 0; }
+  .stop h2::after { content: '_'; -webkit-text-fill-color: var(--c); color: var(--c); animation: blink 1s steps(1) infinite; margin-left: .05em; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes word { to { opacity: 1; transform: none; filter: blur(0); } }
+  .intro .card > .line { transition-delay: 2.5s !important; }
+  .intro .card > .hint { transition-delay: 3s !important; }
+  .intro .card > h1 { opacity: 1 !important; transform: none !important; }
+  @keyframes wheel { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(11px); } }
+
+  /* outro */
+  .outro .card { max-width: 640px; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+
+  /* "click to dive in" label that follows the cursor over a cluster */
+  .dive { position: fixed; z-index: 12; pointer-events: none; transform: translate(18px, 18px);
+    font: 500 .66rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: #05060f;
+    background: var(--c, #fff); padding: 9px 13px; border-radius: 100px; opacity: 0; transition: opacity .2s; }
+  .dive.on { opacity: 1; }
+  body.hovering-cluster { cursor: pointer; }
+
+  .flash { position: fixed; inset: 0; z-index: 20; pointer-events: none; background: #fff; opacity: 0; transition: opacity .5s; }
+  .flash.on { opacity: 1; }
+
+  .noscript { position: relative; z-index: 6; padding: 120px 24px; text-align: center; }
+
+  @media (max-width: 980px) {
+    .port { position: relative; right: auto; top: auto; margin: 0 0 30px; width: min(64vw, 300px); }
+    .stop { flex-direction: column; justify-content: center; align-items: flex-start; }
+  }
+  @media (max-width: 760px) {
+    .vignette { background: linear-gradient(180deg, rgba(2,3,10,.2), rgba(2,3,10,.82) 70%); }
+    .map { display: none; }
+    .bar-links .pill:not(.keep) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card > *, .port { transition: none; opacity: 1; transform: none; }
+    .hint i::after, .port-glass, .port-ring { animation: none; }
+    .intro h1 .w { animation: none; opacity: 1; transform: none; filter: none; }
+  }
+</style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="nav-name" href="index.html">Ioanna Gkerdouki</a>
-    <div class="nav-links">
-      <a href="index.html" aria-current="page">Work</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </div>
-</nav>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="vignette"></div>
+<div class="dive">Click to dive in</div>
+<div class="flash"></div>
 
-<header class="hero wrap">
-  <div class="hero-copy">
-    <p class="hello">Hello, I'm Ioanna.</p>
-    <h1 class="display">I build systems that <em>notice</em> what people miss.</h1>
-    <p class="lead">
-      I study math and computer science at UC San Diego, and I build machine-learning
-      systems end to end: the model, the architecture around it, and the interface people
-      have to trust. So far they can spot a fall on camera, predict where pesticide drift
-      will travel, and warn a driver about the deer ahead.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#work">See my work <span aria-hidden="true">↓</span></a>
-      <a class="btn" href="assets/Ioanna_Gkerdouki_Resume.pdf">Résumé <span aria-hidden="true">↓</span></a>
-      <a class="btn" href="https://github.com/Igkerdouki">GitHub <span aria-hidden="true">↗</span></a>
-      <a class="btn" href="mailto:i.gkerdouki@gmail.com">Say hi</a>
-    </div>
-    <p class="hero-open"><span class="hero-open-dot" aria-hidden="true"></span>Graduating March 2027 · Open to software engineering roles: machine learning, front end and full stack</p>
-  </div>
-
-  <aside class="hero-side" aria-label="Questions I'm chasing">
-    <div class="wonder">
-      <div class="wonder-label">
-        Questions I'm chasing
-        <span class="wonder-count" aria-hidden="true"></span>
-      </div>
-
-      <div class="wonder-items">
-        <article class="wonder-item is-on" style="--tint:#2f8b93;">
-          <h2 class="wonder-q">Can a camera notice a fall before a person does?</h2>
-          <p class="wonder-a">
-            Perceptra watches a live feed for falls, choking and unresponsiveness, then calls
-            for help. I set the product direction and wrote the pose-detection pipeline.
-          </p>
-          <a class="wonder-link" href="work/perceptra.html">Read the case study →</a>
-        </article>
-
-        <article class="wonder-item" style="--tint:#c2556f;">
-          <h2 class="wonder-q">Did the AI actually build what the ticket asked for?</h2>
-          <p class="wonder-a">
-            SpecCheck doesn't read the diff and guess. It runs every requirement against the
-            live app, fast-forwards the clock when it has to, and posts the evidence.
-          </p>
-          <a class="wonder-link" href="work/speccheck.html">Read the case study →</a>
-        </article>
-
-        <article class="wonder-item" style="--tint:#d1803a;">
-          <h2 class="wonder-q">Can a roadside camera tell a deer from a bear?</h2>
-          <p class="wonder-a">
-            WildSafe can, and the accuracy was fantastic: 94 to 99% per species, built on
-            CLIP, OpenAI's pre-trained vision model. It warns the driver, then plays a
-            deterrent sound tuned to that animal.
-          </p>
-          <a class="wonder-link" href="work/wildsafe.html">Read the case study →</a>
-        </article>
-
-        <article class="wonder-item" style="--tint:#3f8f5f;">
-          <h2 class="wonder-q">Where does the spray go once it leaves the field?</h2>
-          <p class="wonder-a">
-            GeoSync models pesticide drift from weather and California's public use reports,
-            then turns it into a risk map someone living next to the field can read.
-          </p>
-          <a class="wonder-link" href="work/geosync.html">Read the case study →</a>
-        </article>
-
-        <article class="wonder-item" style="--tint:#6a5acd;">
-          <h2 class="wonder-q">Is there a 3×3 magic square made only of square numbers?</h2>
-          <p class="wonder-a">
-            Nobody knows — the problem has been open since 1984. I'm chasing it on my own
-            time with computer-assisted search, and keeping honest notes on what fails.
-          </p>
-          <a class="wonder-link" href="https://github.com/Igkerdouki/magic-square-congrua">See the research on GitHub ↗</a>
-        </article>
-
-        <article class="wonder-item" style="--tint:#2f8b93;">
-          <h2 class="wonder-q">What colour did the eye just see?</h2>
-          <p class="wonder-a">
-            In the IEBL lab at UC San Diego I build pipelines that decode neural signals —
-            right now, classifying colour from optic nerve recordings.
-          </p>
-        </article>
-      </div>
-
-      <div class="wonder-nav">
-        <div class="wonder-dots"></div>
-        <button class="wonder-next" type="button">Next question <span aria-hidden="true">→</span></button>
-      </div>
-    </div>
-  </aside>
+<header class="bar">
+  <a class="bar-name" href="#hello">Ioanna Gkerdouki</a>
+  <nav class="bar-links">
+    <button class="pill keep sound" type="button" aria-pressed="true">Sound on</button>
+    <a class="pill keep" href="classic.html">Classic view</a>
+    <a class="pill" href="assets/Ioanna_Gkerdouki_Resume.pdf">Résumé</a>
+    <a class="pill" href="https://github.com/Igkerdouki">GitHub</a>
+  </nav>
 </header>
 
-<section class="stage" id="work">
-  <div class="stage-inner">
-    <header class="stage-head">
-      <span class="eyebrow">Selected work</span>
-      <h2>Six things I built. Each one <em>notices</em> something.</h2>
-    </header>
+<nav class="map" aria-label="Jump to a project"></nav>
 
-    <a class="scene" href="work/perceptra.html" style="--tint:#5cc8d1; --ground:#070c1c;">
-      <div class="scene-text">
-        <span class="scene-no">01 / 06 </span>
-        <h3 class="scene-name">Perceptra</h3>
-        <p class="scene-line">Cameras that recognize <b>a fall, a choking, a body that stopped moving</b> — and call for help.</p>
-        <p class="scene-meta">Product Owner &amp; ML Lead · SDSC RDS 2026<br>MediaPipe · FastAPI · Supabase</p>
-        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
-      </div>
-      <div class="scene-media">
-        <div class="vf">
-          <video src="assets/perceptra-fall-demo.mp4" poster="assets/perceptra-fall-demo.jpg" width="1600" height="862" muted loop playsinline preload="none" aria-label="Screen recording of Perceptra's live console: a picture of a falling person is held up to the camera, a red box appears around it, and the Alert Monitor raises 'Fall detected'."></video>
-          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
-          <span class="vf-tag"><b>Noticed</b>a fall, one second after it happened</span>
-        </div>
-      </div>
-    </a>
+<main>
+  <section class="stop intro" id="hello" data-name="Hello" style="--c:#ffd27a;">
+    <div class="card">
+      <span class="kicker">UC San Diego · Math &amp; Computer Science</span>
+      <h1 aria-label="Curious about everything. So I build my way in."><span class="ln"><span class="w" style="--i:0">Curious</span> <span class="w" style="--i:1">about</span> <span class="w" style="--i:2">everything.</span></span><span class="ln"><span class="w" style="--i:3">So</span> <span class="w" style="--i:4">I</span> <span class="w g" style="--i:5">build</span> <span class="w g" style="--i:6">my</span> <span class="w g" style="--i:7">way</span> <span class="w g" style="--i:8">in.</span></span></h1>
+      <p class="line">Cameras, pesticide drift, the optic nerve, bonds, a gymnastics game. Every light out there is a project I couldn't stop thinking about until it worked.</p>
+      <div class="hint"><i></i>Scroll to fly</div>
+    </div>
+  </section>
 
-    <a class="scene" href="work/geosync.html" style="--tint:#9fdc7a; --ground:#08150d;">
-      <div class="scene-text">
-        <span class="scene-no">02 / 06 <span class="scene-status">Working prototype</span></span>
-        <h3 class="scene-name">GeoSync</h3>
-        <p class="scene-line">Predicting where pesticide drift travels <b>before it reaches a school.</b></p>
-        <p class="scene-meta">ML &amp; Platform · SDSC RDS 2026<br>Gaussian plume · FastAPI · PostGIS</p>
-        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
-      </div>
-      <div class="scene-media">
-        <div class="vf">
-          <video src="assets/geosync-demo.mp4" poster="assets/geosync-demo.jpg" width="1600" height="804" muted loop playsinline preload="none" aria-label="Screen recording of the GeoSync dashboard: California's counties shaded by pesticide use, with live spray events and an assistant answering a question about a chemical."></video>
-          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
-          <span class="vf-tag"><b>Noticed</b>46.0M lbs applied in Fresno County in 2023</span>
-        </div>
-      </div>
+  <section class="stop" id="perceptra" data-name="Perceptra" data-href="work/perceptra.html" style="--c:#2ee6f0;">
+    <div class="card">
+      <span class="kicker"><b>01</b> Computer vision</span>
+      <h2>Perceptra</h2>
+      <p class="line">A camera that notices when someone falls, chokes or stops moving, and calls for help before anyone else has seen it.</p>
+      <p class="meta"><span>Product owner &amp; ML lead</span> at the San Diego Supercomputer Center<br>MediaPipe, YOLO, FastAPI, Supabase</p>
+      <a class="go" href="work/perceptra.html">See how it works <i>→</i></a>
+    </div>
+    <a class="port" href="work/perceptra.html" aria-label="Open the Perceptra case study">
+      <span class="port-ring"></span>
+      <span class="port-glass"><video src="assets/perceptra-fall-demo.mp4" poster="assets/perceptra-fall-demo.jpg" muted loop playsinline preload="none"></video></span>
+      <span class="port-tag">Live fall detection</span>
     </a>
+  </section>
 
-    <a class="scene" href="work/wildsafe.html" style="--tint:#f2a865; --ground:#160e17;">
-      <div class="scene-text">
-        <span class="scene-no">03 / 06 <span class="scene-status">Deployed</span></span>
-        <h3 class="scene-name">WildSafe</h3>
-        <p class="scene-line">It spots the deer <b>before the driver does</b> — and warns them in time.</p>
-        <p class="scene-meta">Machine Learning · 2026<br>CLIP · Pose estimation · Docker</p>
-        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
-      </div>
-      <div class="scene-media">
-        <div class="vf">
-          <video src="assets/wildsafe-wide.mp4" poster="assets/wildsafe-wide.jpg" width="1600" height="862" muted loop playsinline preload="none" aria-label="Two recordings side by side: the WildSafe phone alert reading 'Wildlife alert — deer detected, 0.3 miles ahead on Route 7', and the interactive deterrent demo playing a species-specific sound."></video>
-          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
-          <span class="vf-tag"><b>Noticed</b>a deer, 0.3 miles ahead</span>
-        </div>
-      </div>
+  <section class="stop" id="geosync" data-name="GeoSync" data-href="work/geosync.html" style="--c:#7dff6a;">
+    <div class="card">
+      <span class="kicker"><b>02</b> Environmental ML</span>
+      <h2>GeoSync</h2>
+      <p class="line">California logs every pesticide spray. I turned 55.7 million of those records into a map that warns a school before the drift gets there.</p>
+      <p class="meta"><span>ML &amp; platform</span>, SDSC 2026<br>Gaussian plume model, FastAPI, PostGIS</p>
+      <a class="go" href="work/geosync.html">See how it works <i>→</i></a>
+    </div>
+    <a class="port" href="work/geosync.html" aria-label="Open the GeoSync case study">
+      <span class="port-ring"></span>
+      <span class="port-glass"><video src="assets/geosync-demo.mp4" poster="assets/geosync-demo.jpg" muted loop playsinline preload="none"></video></span>
+      <span class="port-tag">Ten years of sprays</span>
     </a>
+  </section>
 
-    <a class="scene" href="work/bloom.html" style="--tint:#b3a6ff; --ground:#0c0d1f;">
-      <div class="scene-text">
-        <span class="scene-no">04 / 06 <span class="scene-status">Working prototype</span></span>
-        <h3 class="scene-name">Bloom</h3>
-        <p class="scene-line">Investing that <b>teaches you as you go,</b> so you stop feeling lost.</p>
-        <p class="scene-meta">ML &amp; Full Stack · 2026 — ongoing<br>FastAPI · React · Interactive Brokers</p>
-        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
-      </div>
-      <div class="scene-media">
-        <div class="vf">
-          <video src="assets/bloom-lily-demo.mp4" poster="assets/bloom-lily-demo.jpg" width="1600" height="862" muted loop playsinline preload="none" aria-label="Screen recording of Bloom: a question is typed to the assistant, and three bonds light up green in the bond finder."></video>
-          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
-          <span class="vf-tag"><b>Noticed</b>three Treasuries worth a second look</span>
-        </div>
-      </div>
+  <section class="stop" id="wildsafe" data-name="WildSafe" data-href="work/wildsafe.html" style="--c:#ffa23a;">
+    <div class="card">
+      <span class="kicker"><b>03</b> Deployed ML · IEEE winner</span>
+      <h2>WildSafe</h2>
+      <p class="line">A roadside camera spots the deer first, warns the driver, then plays the one sound that sends that animal running.</p>
+      <p class="meta"><span>94 to 99% accurate</span> per species<br>CLIP, pose estimation, Docker</p>
+      <a class="go" href="work/wildsafe.html">See how it works <i>→</i></a>
+    </div>
+    <a class="port" href="work/wildsafe.html" aria-label="Open the WildSafe case study">
+      <span class="port-ring"></span>
+      <span class="port-glass"><video src="assets/wildsafe-wide.mp4" poster="assets/wildsafe-wide.jpg" muted loop playsinline preload="none"></video></span>
+      <span class="port-tag">Deer, 0.3 miles ahead</span>
     </a>
+  </section>
 
-    <a class="scene" href="work/speccheck.html" style="--tint:#f490a6; --ground:#170a10;">
-      <div class="scene-text">
-        <span class="scene-no">05 / 06 <span class="scene-status">Open source</span></span>
-        <h3 class="scene-name">SpecCheck</h3>
-        <p class="scene-line">Did the AI build <b>what the ticket asked for?</b> Don't read the code. Run it.</p>
-        <p class="scene-meta">Design &amp; Build · 2026<br>Python · GitHub Actions</p>
-        <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
-      </div>
-      <div class="scene-media">
-        <div class="vf">
-          <pre class="vf-trace" aria-label="SpecCheck output: three wrong passwords return 401 as expected, then the correct password returns 200 where 423 was expected."><span>$ speccheck run specs/login-lockout.json</span>
-<span>login · wrong    → 401 <b class="ok">✓</b></span>
-<span>login · wrong    → 401 <b class="ok">✓</b></span>
-<span>login · wrong    → 401 <b class="ok">✓</b></span>
-<span>login · correct  → 200 <b class="bad">✗ expected 423</b></span>
-<span class="verdict">Verdict: <b class="bad">Not met</b> — the account never locks</span></pre>
-          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
-          <span class="vf-tag"><b>Noticed</b>login returned 200 where the spec said 423</span>
-        </div>
-      </div>
+  <section class="stop" id="bloom" data-name="Bloom" data-href="work/bloom.html" style="--c:#a98bff;">
+    <div class="card">
+      <span class="kicker"><b>04</b> Investing · AI assistant</span>
+      <h2>Bloom</h2>
+      <p class="line">An investing app that explains itself while you use it. Ask about bonds and the answers light up right there in the table.</p>
+      <p class="meta"><span>ML &amp; full stack</span>, still growing<br>FastAPI, React, multi-agent, Interactive Brokers</p>
+      <a class="go" href="work/bloom.html">See how it works <i>→</i></a>
+    </div>
+    <a class="port" href="work/bloom.html" aria-label="Open the Bloom case study">
+      <span class="port-ring"></span>
+      <span class="port-glass"><video src="assets/bloom-lily-demo.mp4" poster="assets/bloom-lily-demo.jpg" muted loop playsinline preload="none"></video></span>
+      <span class="port-tag">Ask, and it lights up</span>
     </a>
+  </section>
 
-    <a class="scene" href="work/patita.html" style="--tint:#c9a2ff; --ground:#120b22;">
-      <div class="scene-text">
-        <span class="scene-no">06 / 06 <span class="scene-status">Coming to the App Store</span></span>
-        <h3 class="scene-name">Patita</h3>
-        <p class="scene-line">Two silly 3D toy-games where three girls <b>tumble, skate, sparkle and fall over with a honk.</b></p>
-        <p class="scene-meta">Design &amp; Build · 2026<br>three.js · Capacitor · iOS</p>
-        <span class="scene-cta">See the games <i aria-hidden="true">→</i></span>
-      </div>
-      <div class="scene-media">
-        <div class="vf">
-          <video src="assets/patita-reel.mp4" poster="assets/patita-reel.jpg" width="1600" height="900" muted loop playsinline preload="none" aria-label="Screenshots from the Patita games fading one into the next: the three girls lined up on the gymnastics floor, a girl skating on the ice, a rail of sparkly leotards, and the space rink."></video>
-          <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
-          <span class="vf-tag"><b>Noticed</b>a perfect landing, then a honk</span>
-        </div>
-      </div>
-    </a>
+  <section class="stop" id="speccheck" data-name="SpecCheck" data-href="work/speccheck.html" style="--c:#ff5f95;">
+    <div class="card">
+      <span class="kicker"><b>05</b> Developer tools · open source</span>
+      <h2>SpecCheck</h2>
+      <p class="line">An AI wrote the pull request. Did it actually do what the ticket said? SpecCheck runs the app and finds out.</p>
+      <p class="meta"><span>Designed and built</span> on my own<br>Python, GitHub Actions</p>
+      <a class="go" href="work/speccheck.html">See how it works <i>→</i></a>
+    </div>
+  </section>
 
-  </div>
-</section>
+  <section class="stop" id="patita" data-name="Patita" data-href="work/patita.html" style="--c:#d36bff;">
+    <div class="card">
+      <span class="kicker"><b>06</b> Games · App Store soon</span>
+      <h2>Patita</h2>
+      <p class="line">Two silly 3D games. Three girls flip, skate, show off and fall over with a honk. Falling is the best part.</p>
+      <p class="meta"><span>Playable right now</span> in your browser<br>three.js, Capacitor, iOS</p>
+      <a class="go" href="work/patita.html">Go play <i>→</i></a>
+    </div>
+    <a class="port" href="work/patita.html" aria-label="Open the Patita page">
+      <span class="port-ring"></span>
+      <span class="port-glass"><video src="assets/patita-reel.mp4" poster="assets/patita-reel.jpg" muted loop playsinline preload="none"></video></span>
+      <span class="port-tag">Flip. Flop. Honk.</span>
+    </a>
+  </section>
 
-<section class="wrap" id="code">
-  <span class="eyebrow">Also on GitHub</span>
-  <div class="narrow">
-    <h2>Smaller things I built to understand how they work.</h2>
-  </div>
-
-  <div class="repos">
-    <a class="repo" href="https://github.com/Igkerdouki/c-web-server">
-      <span class="repo-name">c-web-server <span aria-hidden="true">↗</span></span>
-      <span class="repo-desc">An HTTP chat server written from scratch over raw POSIX sockets, with routing and query parsing.</span>
-      <span class="repo-lang">C</span>
-    </a>
-    <a class="repo" href="https://github.com/Igkerdouki/c-shell">
-      <span class="repo-name">c-shell <span aria-hidden="true">↗</span></span>
-      <span class="repo-desc">A Unix-style command-line shell with process control and command history.</span>
-      <span class="repo-lang">C</span>
-    </a>
-    <a class="repo" href="https://github.com/Igkerdouki/memory-allocator">
-      <span class="repo-name">memory-allocator <span aria-hidden="true">↗</span></span>
-      <span class="repo-desc">A dynamic memory allocator — my own malloc and free.</span>
-      <span class="repo-lang">C</span>
-    </a>
-    <a class="repo" href="https://github.com/Igkerdouki/magic-square-congrua">
-      <span class="repo-name">magic-square-congrua <span aria-hidden="true">↗</span></span>
-      <span class="repo-desc">Independent, computer-assisted research on the 3×3 magic square of squares.</span>
-      <span class="repo-lang">Python</span>
-    </a>
-    <a class="repo" href="https://github.com/Igkerdouki/prompt-to-product">
-      <span class="repo-name">prompt-to-product <span aria-hidden="true">↗</span></span>
-      <span class="repo-desc">Turns a text prompt into a 3D model ready for manufacturing.</span>
-      <span class="repo-lang">Rust · Three.js</span>
-    </a>
-    <a class="repo" href="https://github.com/Igkerdouki/pi-camera">
-      <span class="repo-name">pi-camera <span aria-hidden="true">↗</span></span>
-      <span class="repo-desc">A Raspberry Pi wildlife-detection camera with a command-line tool and a browser live view.</span>
-      <span class="repo-lang">Python</span>
-    </a>
-  </div>
-</section>
-
-<section class="wrap" id="about">
-  <span class="eyebrow">About</span>
-  <div class="narrow">
-    <h2>Most detection systems fail at the same place — the handoff.</h2>
-    <p>
-      A model can be accurate and still useless. If the alert reaches the wrong person,
-      arrives too late, or gives no reason for its confidence, nobody acts on it. That
-      gap between a correct prediction and a useful one is the part of the work I care
-      about most.
-    </p>
-    <p>
-      So I tend to build the whole path. On Perceptra I set the product direction, drew
-      the architecture from camera to alert, decided what we would detect first, and then
-      wrote the pose-detection pipeline myself. On GeoSync the modeling only mattered
-      because it ended as a map a parent could read. On WildSafe the hard problem was not
-      classification but keeping inference alive inside a memory-constrained container.
-    </p>
-    <p>
-      My background runs across computer vision, signal processing, and neural data
-      analysis. The through-line is the same in all of it: finding the signal, then making
-      it mean something to someone.
-    </p>
-  </div>
-</section>
-
-<footer id="contact">
-  <div class="wrap foot-inner">
-    <div>
-      <h2 style="margin-bottom:14px;">Let's talk.</h2>
-      <div class="foot-links">
-        <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
-        <a href="https://github.com/Igkerdouki">GitHub</a>
-        <a href="https://www.linkedin.com/in/ioanna-gkerdouki-821b10153/">LinkedIn</a>
-        <a href="assets/Ioanna_Gkerdouki_Resume.pdf">Résumé (PDF)</a>
+  <section class="stop outro" id="hi" data-name="Say hi" style="--c:#c6ff5a;">
+    <div class="card">
+      <span class="kicker">End of the line</span>
+      <h2>Got something worth building?</h2>
+      <p class="line">I graduate in March 2027 and I'm looking for software roles in machine learning, front end and full stack.</p>
+      <a class="go" href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com <i>→</i></a>
+      <div class="links">
+        <a class="pill" href="https://www.linkedin.com/in/ioanna-gkerdouki-821b10153/">LinkedIn</a>
+        <a class="pill" href="https://github.com/Igkerdouki">GitHub</a>
+        <a class="pill" href="assets/Ioanna_Gkerdouki_Resume.pdf">Résumé</a>
+        <a class="pill" href="classic.html">Classic view</a>
       </div>
     </div>
-    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
-  </div>
-</footer>
+  </section>
+</main>
 
-<script src="site.js"></script>
+<noscript><div class="noscript">This page needs JavaScript for the 3D galaxy. <a class="pill" href="classic.html">Open the classic view</a></div></noscript>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="galaxy.js"></script>
 </body>
 </html>
