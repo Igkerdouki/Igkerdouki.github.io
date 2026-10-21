@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Perceptra — Ioanna Gkerdouki</title>
-<meta name="description" content="Real-time medical emergency detection from live video. Product ownership, system architecture, and a MediaPipe pose pipeline detecting falls, choking, and unresponsiveness.">
+<meta name="description" content="Real-time emergency detection from live video: weapons, falls, choking and unresponsiveness. Product ownership, system architecture, a MediaPipe pose pipeline and YOLO weapon detection.">
 <link rel="stylesheet" href="../styles.css">
 <link rel="stylesheet" href="../space.css">
 </head>
@@ -25,11 +25,11 @@
   <canvas class="orb-canvas" aria-hidden="true"></canvas>
   <div class="wrap">
     <span class="eyebrow">01 — Perceptra</span>
-    <h1 class="display">Cameras that <em>recognize</em> an emergency.</h1>
+    <h1 class="display">Cameras that <em>recognize</em> a weapon or an emergency.</h1>
     <p class="lead narrow">
       Most security cameras only matter after something has already happened. Perceptra
-      watches live video and identifies medical emergencies as they occur — a fall, a
-      person choking, a body that has stopped moving — then routes an alert to someone who
+      watches live video and identifies emergencies as they occur — a weapon in frame, a fall,
+      a person choking, a body that has stopped moving — then routes an alert to someone who
       can respond.
     </p>
     <p class="perc-note" aria-hidden="true">Move your cursor — it's watching</p>
@@ -95,6 +95,17 @@
       </figcaption>
     </figure>
   </div>
+
+  <figure>
+    <div class="figure-frame">
+      <img src="../assets/perceptra-weapon.jpg" loading="lazy"
+           alt="The Perceptra live console: I hold a kitchen knife up to the camera, face blurred. A red box labelled 'Dangerous object detected, 91%' surrounds the knife, and the Alert Monitor shows the active alert at 91% confidence with Escalate, Broadcast and Dismiss buttons, above recent incidents including an escalated weapon detection.">
+    </div>
+    <figcaption>
+      Weapon detection on the same live feed: the YOLO model boxes a knife as a dangerous
+      object at 91% confidence, and the Alert Monitor offers Escalate, Broadcast or Dismiss.
+    </figcaption>
+  </figure>
 </section>
 
 <section class="wrap">
