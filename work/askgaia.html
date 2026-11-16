@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GeoSync — Ioanna Gkerdouki</title>
-<meta name="description" content="Real-time pesticide drift monitoring for California — Gaussian plume modeling over state spray records, turned into an early-warning system for schools and farmworker communities.">
+<title>askgaia — Ioanna Gkerdouki</title>
+<meta name="description" content="askgaia: an agentic environmental-intelligence platform for pesticide drift in California. 11 years of state records in Neon + PostGIS, an MCP server with 14 tools, and live 3D drift models of real towns.">
 <link rel="stylesheet" href="../styles.css">
 <link rel="stylesheet" href="../space.css">
 </head>
@@ -101,13 +101,13 @@
     </g>
   </svg>
   <div class="wrap">
-    <span class="eyebrow">02 — GeoSync <span class="badge badge-wip">Working prototype</span></span>
-    <h1 class="display">The data existed. The <em>warning</em> did not.</h1>
+    <span class="eyebrow">03 — askgaia <span class="badge">SanD Hacks 2026</span></span>
+    <h1 class="display">Ask the Earth what was <em>sprayed</em> near you.</h1>
     <p class="lead narrow">
-      California logs every pesticide application in the state. That record is public, and
-      it is effectively unreadable — buried in government databases nobody outside a
-      research office can query. GeoSync turns it into a live map, a drift forecast, and an
-      alert that reaches a school before the spray does.
+      California records every agricultural pesticide application, 1.92 billion pounds
+      between 2014 and 2024. askgaia turns that record into something a parent can
+      ask in plain words: an AI investigator that answers with sources, and a live 3D
+      model of the real town that shows where today's wind would carry the drift.
     </p>
     <p class="geo-status" aria-live="polite"><span class="geo-dot"></span><span class="geo-status-text">Fresno County · 46.0M lbs applied in 2023 · #1 of 58</span></p>
     <p class="geo-note">Hover a county, or click to hold it. Real 2023 totals from California's Pesticide Use Reports; darker means more applied.</p>
@@ -116,249 +116,107 @@
 
 <div class="wrap">
   <dl class="case-summary">
-    <div>
-      <dt>Role</dt>
-      <dd>ML &amp; Platform</dd>
-    </div>
-    <div>
-      <dt>Context</dt>
-      <dd>SDSC Research Data Services, 2026</dd>
-    </div>
-    <div>
-      <dt>Data</dt>
-      <dd>California PUR, CalEnviroScreen, OpenWeatherMap, EPA</dd>
-    </div>
-    <div>
-      <dt>Stack</dt>
-      <dd>FastAPI, PostgreSQL/PostGIS, React, MapLibre GL</dd>
-    </div>
-    <div>
-      <dt>Code</dt>
-      <dd><a href="https://github.com/Igkerdouki/geosync">View on GitHub ↗</a></dd>
-    </div>
+    <div><dt>Role</dt><dd>Frontend, 3D &amp; spatial tools</dd></div>
+    <div><dt>Context</dt><dd>SanD Hacks 2026, 24 hours, with Ved Panse</dd></div>
+    <div><dt>Data</dt><dd>CDPR Pesticide Use Reports &amp; SURF, OpenStreetMap, Open-Meteo</dd></div>
+    <div><dt>Stack</dt><dd>Neon + PostGIS, FastMCP, Gemini, Bright Data, three.js, Vercel</dd></div>
+    <div><dt>Links</dt><dd><a href="https://askgaia.vercel.app/home.html">Live site ↗</a> · <a href="https://github.com/Igkerdouki/geo">GitHub ↗</a></dd></div>
   </dl>
 </div>
 
 <section class="wrap geo-demo">
   <div class="narrow">
     <span class="eyebrow">See it work</span>
-    <h2>Ten years of spray records, on one map</h2>
+    <h2>From a question to a real town, in one flight</h2>
     <p>
-      A walk through the dashboard on 2023 data: counties shaded by pounds applied, the
-      schools and spray sites inside them, the built-in assistant answering a question
-      about chlorpyrifos, and the research view that states where every number comes from.
+      The landing Earth glows where pesticides were applied. Ask about a place and the
+      camera warps down into Google's photorealistic 3D tiles, then the town rebuilds
+      itself from real buildings while the investigator answers beside it.
     </p>
   </div>
-
   <figure class="screen">
-    <div class="screen-bar" aria-hidden="true"><i></i><i></i><i></i><span>GeoSync — live dashboard</span></div>
-    <video src="../assets/geosync-demo.mp4" poster="../assets/geosync-demo.jpg" autoplay muted loop playsinline controls
-           aria-label="Screen recording of the GeoSync dashboard: a dark map of California with counties shaded by pesticide use, hovering over spray sites and a school, opening the AI assistant and asking what chlorpyrifos is, then the research tab listing data sources and methodology."></video>
-    <figcaption>
-      Recorded from the running app. The pesticide totals come from California's public
-      use reports, 2014–2023; the live spray events in the side panel are simulated for
-      the demo.
-    </figcaption>
+    <div class="screen-bar" aria-hidden="true"><i></i><i></i><i></i><span>askgaia.vercel.app</span></div>
+    <video src="../assets/askgaia-demo.mp4" poster="../assets/askgaia-demo.jpg" autoplay muted loop playsinline controls
+           aria-label="Screen recording of askgaia: the particle Earth landing page, a warp into the 3D map, a golden model of a real town with pesticide sections, and the Ask Gaia chat answering with sources."></video>
+    <figcaption>Recorded from the deployed app, sped up 1.6×.</figcaption>
   </figure>
 </section>
 
 <section class="wrap">
   <div class="narrow">
     <span class="eyebrow">The problem</span>
-    <h2>Millions of pounds of chemicals, drifting without notice</h2>
+    <h2>Public records nobody can read</h2>
     <p>
-      Over 200 million pounds of pesticides are applied in California every year. A
-      meaningful fraction does not stay on the field it was sprayed on — it drifts, and it
-      drifts into places where people live: farmworker housing, playgrounds, school
-      campuses in the Central Valley.
-    </p>
-    <p>
-      The people most exposed are the least informed. A parent cannot find out what was
-      sprayed a quarter mile from their house last week. A school nurse seeing elevated
-      illness rates has no way to check whether anything was applied nearby. The Pesticide
-      Use Report data that would answer both questions is published — and unusable.
+      People in California's most farm-heavy counties fall ill from pesticide drift 27
+      times more often than people in other counties (Lee et al., 2011). Children living near
+      treated fields show lower IQ and higher autism risk in long-running studies. The
+      state already publishes where every application happened, down to the square mile.
+      It is just locked in spreadsheets that no parent, teacher or clinic will open.
     </p>
   </div>
-
-  <p class="pull">The information exists. The protection does not.</p>
-
-  <div class="narrow">
-    <p>
-      That gap is the entire project. GeoSync is not a data collection effort. It is a
-      translation layer over a dataset the state already maintains.
-    </p>
-  </div>
+  <p class="pull">The data was never missing. The question was.</p>
 </section>
 
 <section class="wrap">
   <div class="narrow">
-    <span class="eyebrow">Grounding the work</span>
-    <h2>Twenty users, one shared question</h2>
+    <span class="eyebrow">Architecture</span>
+    <h2>Fourteen tools, and a rule: no tool result, no claim</h2>
     <p>
-      We wrote twenty user stories before writing any code, spanning the range of people
-      who would touch this: parents, beekeepers, farmers, school administrators, public
-      health researchers, farm inspectors, farmworkers.
-    </p>
-    <p>
-      The stories diverged wildly in framing but converged on one underlying need —
-      <strong>what was sprayed near this location, and should I change my behavior because
-      of it?</strong> A pregnant mother, a daycare provider, and a grocery buyer are all
-      asking that question with different stakes attached. Recognizing that let us build
-      one query engine underneath and vary only the presentation.
+      An investigator agent plans the work and calls tools on one MCP server. It writes only
+      what those tools return, and separates what was recorded, measured, modelled and
+      still uncertain. Because the tools speak MCP, any AI client (Gemini, Claude Desktop,
+      Cursor) can use the same data our web app does.
     </p>
   </div>
-
-  <div class="cards">
-    <div class="card">
-      <h3>The parent</h3>
-      <p>"I want my child's cumulative exposure score so I can discuss cancer risk with their doctor."</p>
-    </div>
-    <div class="card">
-      <h3>The school administrator</h3>
-      <p>"I want automatic alerts when drift is approaching campus so I can keep children indoors."</p>
-    </div>
-    <div class="card">
-      <h3>The farmer</h3>
-      <p>"I want AI-optimized dosage recommendations so I use only what's needed and save money."</p>
-    </div>
-    <div class="card">
-      <h3>The organic grower</h3>
-      <p>"I want proof when a neighboring farm's drift contaminates my crops so I can protect my certification."</p>
-    </div>
-  </div>
-
-  <div class="narrow">
-    <p>
-      The farmer stories mattered more than they first appeared. A tool that only accuses
-      growers gets adopted by nobody who actually holds a sprayer. Dosage optimization gave
-      the same platform a reason to be useful to the people generating the data — which is
-      the only version of this that survives contact with the real world.
-    </p>
-  </div>
-</section>
-
-<section class="wrap">
-  <div class="narrow">
-    <span class="eyebrow">Modeling</span>
-    <h2>Physics first, learning second</h2>
-    <p>
-      Drift prediction is not a pure machine learning problem. Atmospheric dispersion has
-      well-established physics, and ignoring it in favor of fitting a model to sparse
-      labels would have been both less accurate and less defensible. I paired a Gaussian
-      plume model with learned components where the data could actually support them.
-    </p>
-  </div>
-
-  <div class="stack">
-    <div class="stack-row">
-      <div class="stack-k">Drift predictor</div>
-      <div class="stack-v">Gaussian plume dispersion combined with gradient boosting — physics sets the shape of the plume, the learned layer corrects it against observed conditions.</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-k">Atmospheric stability</div>
-      <div class="stack-v">Stability class derived from live weather, since the same application disperses very differently on a calm night than a windy afternoon.</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-k">Dosage optimizer</div>
-      <div class="stack-v">Planned next: an XGBoost model trained on California PUR records, recommending application amounts from crop, pest, and field size.</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-k">Anomaly detector</div>
-      <div class="stack-v">Isolation Forest flagging unusual spray patterns — including possible unreported events.</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-k">Risk scorer</div>
-      <div class="stack-v">Multi-factor regression producing an exposure score for any address, combining proximity, chemical toxicity, and frequency.</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-k">NLP query engine</div>
-      <div class="stack-v">Retrieval over the spray database so a question in plain English — "what was sprayed near my house last month?" — returns a grounded answer.</div>
-    </div>
-  </div>
-
-  <div class="narrow">
-    <p>
-      The weather dependency is what makes this an early-warning system rather than a
-      historical archive. Drift direction is a function of conditions at the moment of
-      application, so the same spray event produces a completely different risk footprint
-      depending on when it happens.
-    </p>
-  </div>
-</section>
-
-<section class="wrap">
-  <div class="narrow">
-    <span class="eyebrow">The platform</span>
-    <h2>From a database row to a decision</h2>
-  </div>
-
   <figure class="screen">
-    <div class="screen-bar" aria-hidden="true"><i></i><i></i><i></i><span>GeoSync — landing page</span></div>
-    <img src="../assets/geosync-landing.jpg" alt="The GeoSync landing page: the headline 'Someone is always downwind' in a serif typeface on deep green, beside a photograph of a tractor spraying rows of lettuce, with a card reading 307.2M lbs of pesticide applied in California in 2023.">
-    <figcaption>
-      The front door. I designed and built the landing page; the figures on it are read
-      live from the database. Photograph: Jeff Vanuga, USDA NRCS.
-    </figcaption>
+    <img src="../assets/askgaia-mcp.jpg" alt="Animated diagram: a glowing core (the investigator agent) with fourteen MCP tools orbiting it, connected by light beams to Neon Postgres.">
+    <figcaption>From the explainer film I made for the demo: the agent, its fourteen tools and the Neon database.</figcaption>
   </figure>
-
-  <div class="cards">
-    <div class="card">
-      <h3>Live map dashboard</h3>
-      <p>Spray events plotted with color-coded risk zones, overlaid with school and farm locations so proximity is immediately visible.</p>
-    </div>
-    <div class="card">
-      <h3>Drift forecast</h3>
-      <p>Spray location plus current weather returns a heat map of where the chemical is actually heading.</p>
-    </div>
-    <div class="card">
-      <h3>Exposure scoring</h3>
-      <p>Enter an address, get a weekly exposure score and full historical lookup for that location.</p>
-    </div>
-    <div class="card">
-      <h3>Toxicity database</h3>
-      <p>EPA classifications, carcinogenicity, and health concerns attached to each chemical — so a name in a record becomes meaningful.</p>
-    </div>
-    <div class="card">
-      <h3>Alerts</h3>
-      <p>SMS and email triggered when predicted drift approaches a registered school or home.</p>
-    </div>
-    <div class="card">
-      <h3>Research export</h3>
-      <p>Bulk CSV and JSON export up to 100K rows, with trend and comparison endpoints for public health researchers.</p>
-    </div>
+  <div class="stack">
+    <div class="stack-row"><div class="stack-k">Data</div><div class="stack-v">11.1 million monthly pesticide records (2014–2024, from ~48 million raw rows), 329,278 square-mile sections, 1,092 chemicals and 3,817 water-sampling sites, all in Neon Postgres with PostGIS. A spatial query around a school returns in about a third of a second.</div></div>
+    <div class="stack-row"><div class="stack-k">Spatial tools (mine)</div><div class="stack-v">geocode, pur_records, chemical_profile, water_nearby, wind, run_plume, cite_sources.</div></div>
+    <div class="stack-row"><div class="stack-k">Evidence tools</div><div class="stack-v">find_place, discover_public_evidence and read_public_source through Bright Data, plus investigation tracking. Web results are treated as leads, never as facts.</div></div>
+    <div class="stack-row"><div class="stack-k">Drift physics</div><div class="stack-v">A Gaussian plume with Pasquill–Gifford stability classes A–F, chosen from live Open-Meteo wind speed, daylight and cloud cover.</div></div>
+    <div class="stack-row"><div class="stack-k">Agent</div><div class="stack-v">Gemini for the Ask Gaia chat and OpenAI for the investigator, both answering only from tool output, with citations.</div></div>
   </div>
+</section>
 
+<section class="wrap">
   <div class="narrow">
+    <span class="eyebrow">What I built</span>
+    <h2>Any town, rebuilt, with today's wind</h2>
     <p>
-      The research tooling turned out to matter as much as the consumer-facing map. A
-      public health researcher correlating exposure with cancer incidence by census tract
-      needs bulk access and reproducible queries, not a dashboard — so the API exposes
-      county analysis, chemical comparison, and monthly and yearly time series directly.
+      I owned the frontend and the spatial layer. Pick a place and askgaia rebuilds it as
+      a golden-hour model: every building from OpenStreetMap, the real square-mile sections
+      where pesticides were recorded, schools, clinics, churches, gas stations and canals.
+      Then it pulls the actual wind at that spot right now and runs the plume, so you see
+      which homes and classrooms sit downwind today.
     </p>
+  </div>
+  <figure class="screen">
+    <img src="../assets/askgaia-salinas.jpg" alt="Golden 3D model of Salinas around Alisal High School: real buildings, pesticide sections and a drift plume driven by live wind.">
+    <figcaption>Salinas around Alisal High School, where 1.55 million lbs were recorded within 1.25 km in 2020–2024. The plume follows the live wind.</figcaption>
+  </figure>
+  <div class="cards">
+    <div class="card"><h3>Living Earth</h3><p>A particle globe whose embers are real statewide grid cells, with a time slider from 2014 to 2024.</p></div>
+    <div class="card"><h3>Maria's story</h3><p>A scroll-driven 3D story of one girl's day in Salinas. Every number in it comes from published research.</p></div>
+    <div class="card"><h3>Photorealistic map</h3><p>Google 3D Tiles with a statewide heat grid of about 1,070 hotspots; click one and fly in.</p></div>
+    <div class="card"><h3>Creek water</h3><p>96,648 pesticide detections across California's sampling sites; Alisal Creek alone has 808.</p></div>
   </div>
 </section>
 
 <section class="wrap">
   <div class="narrow">
     <span class="eyebrow">Outcome</span>
-    <h2>A public dataset made usable</h2>
+    <h2>Honest by design</h2>
     <p>
-      GeoSync ships as a working platform — a FastAPI backend serving spray queries, drift
-      prediction, toxicity lookups, and research exports, with a React and MapLibre front end
-      over PostGIS.
+      askgaia is live on Vercel. It never claims exposure. Records are located to a square
+      mile and don't say what time of day a field was sprayed, so the app keeps recorded
+      use, modelled drift and actual exposure as three separate things everywhere.
     </p>
     <p>
-      What I would keep building is validation. The plume model is physically grounded, but
-      confirming predicted drift against measured deposition in the field is the step that
-      would take this from a credible forecast to a defensible one — and it is the step
-      that would let a school actually act on an alert without hesitation.
-    </p>
-    <p>
-      The reason I picked this project is not complicated. Bee colony losses hit their
-      highest recorded level last year, and childhood cancer rates in agricultural regions
-      have been climbing for decades. Those are current facts, not projections. Building a
-      warning layer over data the state already publishes is one of the few interventions
-      available that requires no new legislation and no new sensors.
+      Next, I'd add alerts when a fumigant application is scheduled near a school, and
+      drinking-water data next to the creek samples.
     </p>
   </div>
 </section>
@@ -374,7 +232,7 @@
   <div class="wrap foot-inner">
     <div class="foot-links">
       <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
-      <a href="https://github.com/Igkerdouki/geosync">Repository</a>
+      <a href="https://askgaia.vercel.app/home.html">Live site</a>
       <a href="../index.html">All work</a>
     </div>
     <div class="foot-note">© 2026 Ioanna Gkerdouki</div>

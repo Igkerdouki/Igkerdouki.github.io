@@ -78,10 +78,10 @@
         <article class="wonder-item" style="--tint:#3f8f5f;">
           <h2 class="wonder-q">Where does the spray go once it leaves the field?</h2>
           <p class="wonder-a">
-            GeoSync models pesticide drift from weather and California's public use reports,
-            then turns it into a risk map someone living next to the field can read.
+            askgaia rebuilds a real town in 3D, runs a drift model on today's wind, and lets an
+            AI investigator answer what was sprayed nearby, with every claim sourced.
           </p>
-          <a class="wonder-link" href="work/geosync.html">Read the case study →</a>
+          <a class="wonder-link" href="work/askgaia.html">Read the case study →</a>
         </article>
 
         <article class="wonder-item" style="--tint:#6a5acd;">
@@ -134,19 +134,19 @@
       </div>
     </a>
 
-    <a class="scene" href="work/geosync.html" style="--tint:#9fdc7a; --ground:#08150d;">
+    <a class="scene" href="work/askgaia.html" style="--tint:#9fdc7a; --ground:#08150d;">
       <div class="scene-text">
-        <span class="scene-no">02 / 06 <span class="scene-status">Working prototype</span></span>
-        <h3 class="scene-name">GeoSync</h3>
-        <p class="scene-line">Predicting where pesticide drift travels <b>before it reaches a school.</b></p>
-        <p class="scene-meta">ML &amp; Platform · SDSC RDS 2026<br>Gaussian plume · FastAPI · PostGIS</p>
+        <span class="scene-no">02 / 06 <span class="scene-status">Live</span></span>
+        <h3 class="scene-name">askgaia</h3>
+        <p class="scene-line">Ask what was sprayed near a school, <b>and watch today's wind carry it.</b></p>
+        <p class="scene-meta">Agents · MCP · 3D · SanD Hacks 2026<br>Neon + PostGIS · Gemini · three.js</p>
         <span class="scene-cta">Read the case study <i aria-hidden="true">→</i></span>
       </div>
       <div class="scene-media">
         <div class="vf">
-          <video src="assets/geosync-demo.mp4" poster="assets/geosync-demo.jpg" width="1600" height="804" muted loop playsinline preload="none" aria-label="Screen recording of the GeoSync dashboard: California's counties shaded by pesticide use, with live spray events and an assistant answering a question about a chemical."></video>
+          <video src="assets/askgaia-demo.mp4" poster="assets/askgaia-demo.jpg" muted loop playsinline preload="none" aria-label="Screen recording of askgaia: particle Earth, warp into the 3D map, a real town model and the Ask Gaia chat."></video>
           <i class="vf-c tl"></i><i class="vf-c tr"></i><i class="vf-c bl"></i><i class="vf-c br"></i>
-          <span class="vf-tag"><b>Noticed</b>46.0M lbs applied in Fresno County in 2023</span>
+          <span class="vf-tag"><b>Noticed</b>1.55M lbs within 1.25 km of Alisal High School</span>
         </div>
       </div>
     </a>
@@ -280,8 +280,8 @@
     <p>
       So I tend to build the whole path. On Perceptra I set the product direction, drew
       the architecture from camera to alert, decided what we would detect first, and then
-      wrote the pose-detection pipeline myself. On GeoSync the modeling only mattered
-      because it ended as a map a parent could read. On WildSafe the hard problem was not
+      wrote the pose-detection pipeline myself. On askgaia the data only mattered
+      because it ended as a town a parent could see. On WildSafe the hard problem was not
       classification but keeping inference alive inside a memory-constrained container.
     </p>
     <p>

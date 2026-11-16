@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalpi — Ioanna Gkerdouki</title>
+<meta name="description" content="A Figma plugin and studio that turn a 2D product design into a real-size 3D prototype, so creators can find out what to make before they pay to make it. Built at Cal Hacks 13.">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../space.css">
+</head>
+<body class="space" style="--accent:#b4aaff; --accent-2:#7c6cf0;">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Ioanna Gkerdouki</a>
+    <div class="nav-links">
+      <a href="../index.html">Work</a>
+      <a href="../classic.html#about">About</a>
+      <a href="../classic.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero wrap">
+  <span class="eyebrow">02 — Kalpi <span class="badge badge-wip">Cal Hacks 13</span></span>
+  <h1 class="display">Find out what to make <em>before you pay to make it.</em></h1>
+  <p class="lead narrow">
+    A first product means paying for samples, shipping and minimum orders before you know
+    if anyone wants it. Kalpi turns a flat design into a real-size 3D prototype inside
+    Figma, then lets you try versions of it, all before anything is manufactured.
+  </p>
+
+  <dl class="case-summary">
+    <div>
+      <dt>Role</dt>
+      <dd>Figma plugin, 3D pipeline and Studio, in a team of two</dd>
+    </div>
+    <div>
+      <dt>Year</dt>
+      <dd>October 2026, at Cal Hacks 13</dd>
+    </div>
+    <div>
+      <dt>Stack</dt>
+      <dd>Figma Plugin API, three.js, WebGL, Python, fal.ai (TRELLIS 2, Tripo)</dd>
+    </div>
+    <div>
+      <dt>Status</dt>
+      <dd>Working prototype, live</dd>
+    </div>
+    <div>
+      <dt>Links</dt>
+      <dd><a href="https://kalpi-roan.vercel.app/">Live app ↗</a><br><a href="https://devpost.com/software/kalpi">Devpost ↗</a><br><a href="https://www.youtube.com/watch?v=oIFmQNXHJog">Demo video ↗</a><br><a href="https://github.com/VedPanse/kalpi">GitHub ↗</a></dd>
+    </div>
+  </dl>
+</header>
+
+<section class="wrap">
+  <figure>
+    <div class="figure-frame">
+      <img src="../assets/cover-kalpi.jpg" loading="lazy"
+           alt="Three steps from left to right: a photo of a sage-green water bottle, the same bottle as a 3D model measured at 250 mm tall and 108 mm wide, and three new colour versions in terracotta, navy and cream.">
+    </div>
+    <figcaption>
+      The whole flow on one bottle: the product photo, its 3D model at real size, and new
+      versions to compare.
+    </figcaption>
+  </figure>
+</section>
+
+<section class="wrap">
+  <figure>
+    <div class="figure-frame" style="aspect-ratio:16/9;">
+      <iframe src="https://www.youtube-nocookie.com/embed/oIFmQNXHJog" title="Kalpi demo video" style="width:100%;height:100%;border:0;display:block;" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>Our demo video from Cal Hacks 13.</figcaption>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">The question</span>
+    <h2>Why does a product idea cost thousands before anyone sees it?</h2>
+    <p>
+      Imagining a product takes seconds. Getting a sample takes weeks: you describe it to a
+      factory, pay, wait for shipping, and open a box where the proportions are off. Then
+      you do it again. And even when it is right, you still don't know if anyone will buy it.
+    </p>
+    <p>
+      Designers already draw these products in Figma. Figma's forum has years of requests
+      for 3D, and the answer has always been "export it to another tool." AI image-to-3D
+      models are fast, but they work in a unit cube: no real size, blurry labels, and a
+      back they invent.
+    </p>
+  </div>
+
+  <p class="pull">AI guesses the shape. Figma already knows the size, the outline and the label.</p>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">How it works</span>
+    <h2>The right 3D operation for each layer</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <h3>Geometry first</h3>
+      <p>
+        Round products spin from their outline (bottles, jars, cans). Logos and flat
+        shapes extrude with a bevel. Soft shapes inflate gradually. All of it is plain
+        three.js, so it costs nothing and keeps the designer's exact vectors.
+      </p>
+    </div>
+    <div class="step">
+      <h3>AI only where it's needed</h3>
+      <p>
+        For a product photo or a complex form, the plugin sends the picture to TRELLIS 2
+        or Tripo on fal.ai through a small Python helper, so the API key never sits in the
+        plugin. The model comes back and is snapped to the size of the Figma layer.
+      </p>
+    </div>
+    <div class="step">
+      <h3>Real size, in millimetres</h3>
+      <p>
+        One pixel on a Figma frame is one millimetre. The 3D view draws W, H and D lines,
+        you can type exact sizes, and the model exports as a GLB file ready for the web,
+        AR or a manufacturer.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">What I built</span>
+    <h2>A plugin that feels like part of Figma</h2>
+  </div>
+
+  <div class="stack">
+    <div class="stack-row">
+      <div class="stack-k">Figma plugin</div>
+      <div class="stack-v">Reads the selection's vectors, pencil strokes, text and images; picks spin, extrude or inflate; and shows a live 3D view with depth, bevel, lighting and material controls. Layers become parts you can recolour, hide or explode.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Picture cut-out</div>
+      <div class="stack-v">For a photo, a flood fill finds the background, the largest shape is traced and simplified, and the picture is cropped onto a 3D cut-out of the product.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">AI 3D with safety caps</div>
+      <div class="stack-v">The local helper queues jobs on fal.ai, keeps the key on the computer, and stops after a set number of images and models per run so a demo can't run up a bill.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-k">Studio "Make it 3D"</div>
+      <div class="stack-v">On the Kalpi Studio, any design picture gets a Make it 3D button: pick the design, set the real height, and the model appears with its dimensions, ready to download.</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p>
+      <strong>The hardest part was keeping the designer's intent.</strong> An AI model can
+      make a convincing bottle that is the wrong size with a smudged label. Using Figma's
+      own geometry first, and AI only for what geometry can't describe, keeps the design
+      exact.
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="narrow">
+    <span class="eyebrow">What's next</span>
+    <h2>From prototype to factory</h2>
+    <p>
+      Running the open TRELLIS 2 model on our own GPU to bring the cost per model from
+      about 35 cents to a few cents. Matching a design to shapes factories already have
+      moulds for, so a creator doesn't pay for new tooling. And handing a finished,
+      measured spec straight to a manufacturer.
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <a class="next" href="askgaia.html">
+    <span class="next-l">Next project</span>
+    <span class="next-t">askgaia →</span>
+  </a>
+</div>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-links">
+      <a href="mailto:i.gkerdouki@gmail.com">i.gkerdouki@gmail.com</a>
+      <a href="https://kalpi-roan.vercel.app/">Live app</a>
+      <a href="https://devpost.com/software/kalpi">Devpost</a>
+      <a href="https://www.youtube.com/watch?v=oIFmQNXHJog">Demo video</a>
+      <a href="../index.html">All work</a>
+    </div>
+    <div class="foot-note">© 2026 Ioanna Gkerdouki</div>
+  </div>
+</footer>
+
+<script src="../space.js"></script>
+<script src="../site.js"></script>
+</body>
+</html>

@@ -313,7 +313,7 @@
   start();
 })();
 
-/* GeoSync case study: California's counties, shaded by pesticide use. Hover or click a county. */
+/* askgaia case study: California's counties, shaded by pesticide use. Hover or click a county. */
 
 (function () {
   var hero = document.querySelector('.geo-hero');
